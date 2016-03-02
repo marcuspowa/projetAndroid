@@ -7,11 +7,35 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.remy.mmsongquizz.MainActivity">
+    tools:context=".activities.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test GIT!"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="MMSongQuizz, l&apos;application qui envoie du paté !"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Règles"
+        android:id="@+id/textView2"
+        android:foreground="@color/colorBlue"
+        android:focusableInTouchMode="false"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="31dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/rules"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
         android:layout_alignParentStart="true" />
 </RelativeLayout>
