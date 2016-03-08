@@ -5,11 +5,16 @@ import android.os.Bundle;
 
 import com.example.remy.mmsongquizz.R;
 
+import utils.Test;
+
 public class MainActivity extends AppCompatActivity {
 ///Commentaire
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Test test = new Test("GET","http://api.music-story.com/oauth/request_token","oauth_consumer_key=c9a6a97e3fe0f115120471c481190baa96649eea");
+        System.out.println("TATA"+test.getSignature());
+
     }
 }
