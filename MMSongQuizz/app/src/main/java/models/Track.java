@@ -1,18 +1,16 @@
 package models;
 
+import javax.inject.Inject;
+
 /**
  * Created by remy on 07/03/2016.
  */
-public class Song {
+public class Track {
     private int id;
     private String title;
-
-
-    public Song(){
+    public Track(){
     }
 
-    public Song(String title){
-        this.title = title;
-    }
+
 
 }

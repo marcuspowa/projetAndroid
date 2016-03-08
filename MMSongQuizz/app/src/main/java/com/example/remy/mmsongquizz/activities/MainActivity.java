@@ -5,8 +5,9 @@ import android.os.Bundle;
 
 import com.example.remy.mmsongquizz.R;
 
-import utils.Test;
-
+import utils.Test;import dagger.ObjectGraph;
+import utils.MMQuizzModule;
+import services.TrackManager;
 public class MainActivity extends AppCompatActivity {
 ///Commentaire
     @Override
@@ -16,5 +17,6 @@ public class MainActivity extends AppCompatActivity {
         Test test = new Test("GET","http://api.music-story.com/oauth/request_token","oauth_consumer_key=c9a6a97e3fe0f115120471c481190baa96649eea");
         System.out.println("TATA"+test.getSignature());
 
-    }
+		ObjectGraph objectGraph = ObjectGraph.create(new MMQuizzModule());
+        TrackManager manager = objectGraph.get(TrackManager.class);    }
 }
