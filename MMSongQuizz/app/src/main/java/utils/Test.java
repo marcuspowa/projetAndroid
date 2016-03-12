@@ -49,7 +49,7 @@ public class Test {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return base+" - "+signature;
+        return signature;
     }
 
    /* public String encrypt(String baseString, String key)

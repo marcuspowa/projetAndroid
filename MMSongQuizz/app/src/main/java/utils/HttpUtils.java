@@ -35,6 +35,7 @@ public class HttpUtils {
 
 
     public String request(String urlStr) {
+        Logger.debug("[HttpUtils] sending http request to: "+urlStr);
         try {
             URL url = new URL(urlStr);
 
@@ -46,8 +47,10 @@ public class HttpUtils {
             urlConnection.disconnect();
             return txtReponse;
         } catch (MalformedURLException e) {
+            Logger.error("MalformedURLException in HttpUtils.request",e);
             e.printStackTrace();
         } catch (IOException e) {
+            Logger.error("IOException in HttpUtils.request",e);
             e.printStackTrace();
         }
         return null;
@@ -67,6 +70,7 @@ public class HttpUtils {
             try {
                 in.close();
             } catch (IOException e) {
+                Logger.error("IOException in HttpUtils.streamToString",e);
                 e.printStackTrace();
             }
         }
