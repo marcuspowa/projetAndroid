@@ -19,7 +19,4 @@ public class MMQuizzApplication extends Application {
         t.show();
     }
 
-    public void log(String msg){
-        Log.i(NAME, msg);
-    }
 }
