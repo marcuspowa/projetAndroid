@@ -3,6 +3,7 @@ package utils;
 import android.net.Uri;
 import android.util.Base64;
 
+
 import java.io.UnsupportedEncodingException;
 
 import java.net.URI;
@@ -42,23 +43,38 @@ public class Test {
         base+=encodedRequete+"&";
         base+=encodedParametre;
 
-        String key = "c9a6a97e3fe0f115120471c481190baa96649eea&";
+        String key = "c9a6a97e3fe0f115120471c481190baa96649eea";
         try {
-            signature = encrypt(base,key);
+            signature = sha1(base, key);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return signature;
+        return base+" - "+signature;
     }
 
-    public String encrypt(String baseString, String key)
+   /* public String encrypt(String baseString, String key)
             throws NoSuchAlgorithmException, InvalidKeyException, IllegalStateException,  UnsupportedEncodingException
     {
         Mac mac = Mac.getInstance("HmacSHA1");
         SecretKeySpec secret = new SecretKeySpec(key.getBytes(), mac.getAlgorithm());
         mac.init(secret);
-        byte[] digest = mac.doFinal(baseString.getBytes());
-        byte[] result= Base64.encode(digest, Base64.URL_SAFE);
+        byte[] data = baseString.getBytes("UTF-8");
+        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+        byte[] digest = mac.doFinal(secret.getBytes());
+        byte[] result= Base64.encode(digest, Base64.DEFAULT);
         return new String(result);
+    }*/
+
+    private String sha1(String base, String keyString) throws
+        UnsupportedEncodingException, NoSuchAlgorithmException,
+        InvalidKeyException {
+
+        SecretKeySpec key = new SecretKeySpec((keyString).getBytes("UTF-8"), "HmacSHA1");
+        Mac mac = Mac.getInstance("HmacSHA1");
+        mac.init(key);
+
+        byte[] bytes = mac.doFinal(base.getBytes("UTF-8"));
+
+        return new String(Base64.encodeToString(bytes, Base64.DEFAULT));
     }
 }
