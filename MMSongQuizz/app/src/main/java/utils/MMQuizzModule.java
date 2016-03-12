@@ -9,7 +9,8 @@ import services.TrackManager;
  */
 @Module(
     injects = {
-            TrackManager.class
+            TrackManager.class,
+            HttpUtils.class
     }
 )
 public class MMQuizzModule {

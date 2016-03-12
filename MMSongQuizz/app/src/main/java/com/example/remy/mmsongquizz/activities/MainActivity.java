@@ -5,10 +5,13 @@ import android.os.Bundle;
 
 import com.example.remy.mmsongquizz.R;
 
+import utils.AsyncHttpRequest;
+import utils.HttpUtils;
+import utils.Logger;
 import utils.Test;import dagger.ObjectGraph;
 import utils.MMQuizzModule;
 import services.TrackManager;
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 ///Commentaire
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +21,14 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("TATA"+test.getSignature());
 
 		ObjectGraph objectGraph = ObjectGraph.create(new MMQuizzModule());
-        TrackManager manager = objectGraph.get(TrackManager.class);    }
+        TrackManager manager = objectGraph.get(TrackManager.class);
+        HttpUtils httpUtils = objectGraph.get(HttpUtils.class);
+
+
+        AsyncHttpRequest req = httpUtils.asyncRequest("http://www.google.fr");
+
+        String tmp = req.GetResult();
+        Logger.info(tmp);
+
+    }
 }
