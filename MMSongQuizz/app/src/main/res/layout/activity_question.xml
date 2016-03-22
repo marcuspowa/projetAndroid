@@ -7,44 +7,39 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.MainActivity">
+    tools:context="com.example.remy.mmsongquizz.activities.QuestionActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="MMSongQuizz, l&apos;application qui envoie du paté !"
-        android:id="@+id/textView"
+        android:text="Question.."
+        android:id="@+id/questionTextView"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Règles"
-        android:id="@+id/textView2"
-        android:foreground="@color/colorBlue"
-        android:focusableInTouchMode="false"
-        android:layout_below="@+id/textView"
+        android:id="@+id/questionResponseInput"
+        android:layout_below="@+id/questionTextView"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="31dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/rules"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="91dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GO"
-        android:id="@+id/startBtn"
-        android:layout_below="@+id/textView3"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_marginTop="100dp" />
+        android:text="Valider"
+        android:id="@+id/questionSubmitBtn"
+        android:layout_below="@+id/questionResponseInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/questionMessageText"
+        android:layout_below="@+id/questionSubmitBtn"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

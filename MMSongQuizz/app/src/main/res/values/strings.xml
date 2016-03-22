@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MMSongQuizz</string>
     <string name="rules">Un titre de piste musicale va vous être donné, vous devez en retrouver l\'artiste. Seulement, il va falloir remplir un taquin pour donner la réponse.</string>
+    <string name="NetworkErrorMessage">Une erreur réseau est survenue</string>
 </resources>

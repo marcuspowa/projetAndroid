@@ -2,7 +2,7 @@ package utils;
 
 import dagger.Module;
 import models.Track;
-import services.TrackManager;
+import services.*;
 
 /**
  * Created by remy on 08/03/2016.
@@ -10,7 +10,8 @@ import services.TrackManager;
 @Module(
     injects = {
             TrackManager.class,
-            HttpUtils.class
+            HttpUtils.class,
+            QuestionManager.class
     }
 )
 public class MMQuizzModule {
