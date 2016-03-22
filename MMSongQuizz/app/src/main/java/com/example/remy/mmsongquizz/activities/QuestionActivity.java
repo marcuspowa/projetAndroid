@@ -38,24 +38,26 @@ public class QuestionActivity extends BaseActivity {
     }
 
     private void initView(){
-        currentQuestion = questionManager.getRandomQuestion();
-
-        questionTextView.setText(currentQuestion.getQuestion());
+        setCurrentQuestion(questionManager.getRandomQuestion());
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String response = responseInput.getText().toString();
-                if(currentQuestion.checkResponse(response)){
+                if (currentQuestion.checkResponse(response)) {
                     application.notify("Réponse correcte !");
-                    messageText.setText("");
-                }
-                else{
+                    setCurrentQuestion(questionManager.getRandomQuestion());
+                } else {
                     messageText.setText("Réponse incorrecte !");
                 }
             }
         });
+    }
 
+    private void setCurrentQuestion(IQuestion question){
+        currentQuestion = question;
+        questionTextView.setText(currentQuestion.getQuestion());
+        messageText.setText("");
     }
 
 

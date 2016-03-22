@@ -11,7 +11,9 @@ import services.*;
     injects = {
             TrackManager.class,
             HttpUtils.class,
-            QuestionManager.class
+            QuestionManager.class,
+            GenreManager.class,
+            ArtistManager.class
     }
 )
 public class MMQuizzModule {

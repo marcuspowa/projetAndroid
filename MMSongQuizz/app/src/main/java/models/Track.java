@@ -8,9 +8,18 @@ import javax.inject.Inject;
 public class Track {
     private int id;
     private String title;
-    public Track(){
+
+
+    public Track(int id, String title) {
+        this.id = id;
+        this.title = title;
     }
 
+    public int getId() {
+        return id;
+    }
 
-
+    public String getTitle() {
+        return title;
+    }
 }
