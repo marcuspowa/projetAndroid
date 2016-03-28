@@ -34,16 +34,11 @@ public class Test {
         String encodedParametre =Uri.encode(parametre, "UTF-8");
 
         String signature="";
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         String base=method+"&";
         base+=encodedRequete+"&";
         base+=encodedParametre;
 
-        String key = "c9a6a97e3fe0f115120471c481190baa96649eea";
+        String key = "9f38e975910d2dd21da469bab37a24436b57b51f&";
         try {
             signature = sha1(base, key);
         } catch (Exception e) {

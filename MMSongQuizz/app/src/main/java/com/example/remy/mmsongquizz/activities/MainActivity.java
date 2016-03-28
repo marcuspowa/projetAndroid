@@ -9,9 +9,12 @@ import android.widget.Button;
 
 import com.example.remy.mmsongquizz.R;
 
+import java.util.HashMap;
+
 import utils.AsyncHttpRequest;
 import utils.HttpUtils;
 import utils.Logger;
+import utils.MusicStoryEncryption;
 import utils.Test;import dagger.ObjectGraph;
 import utils.MMQuizzModule;
 import services.TrackManager;
@@ -29,21 +32,22 @@ public class MainActivity extends BaseActivity {
 
         initView();
 
-
+        // genere Access Token
         String baseUrl = "http://api.music-story.com/oauth/request_token";
-        String baseParams = "oauth_consumer_key=c9a6a97e3fe0f115120471c481190baa96649eea";
-        Test test = new Test("GET",baseUrl,baseParams);
-        String signature = test.getSignature();
-        Logger.debug(signature);
+        HashMap<String,String> param = new HashMap<>();
+        param.put("oauth_consumer_key", MusicStoryEncryption.consumerKey);
+        String signedUrl= MusicStoryEncryption.signUrl(baseUrl,param,"");
+
+
+        Logger.debug(signedUrl);
 
         TrackManager manager = application.getContainer().get(TrackManager.class);
         HttpUtils httpUtils = application.getContainer().get(HttpUtils.class);
 
-
-        AsyncHttpRequest req = httpUtils.asyncRequest(baseUrl + "?" + baseParams + "&oauth_signature=" + signature);
+        AsyncHttpRequest req = httpUtils.asyncRequest(signedUrl);
 
         String tmp = req.GetResult();
-        Logger.debug(tmp);
+        Logger.debug("resulta :"+tmp);
 
     }
 
