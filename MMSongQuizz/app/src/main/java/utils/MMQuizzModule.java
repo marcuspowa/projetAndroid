@@ -13,8 +13,7 @@ import services.*;
             HttpUtils.class,
             QuestionManager.class,
             GenreManager.class,
-            ArtistManager.class,
-            MusicStoryTokenManager.class
+            ArtistManager.class
     }
 )
 public class MMQuizzModule {

@@ -1,5 +1,6 @@
 package utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -10,6 +11,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -35,12 +38,14 @@ public class HttpUtils {
 
 
     public String request(String urlStr) {
-        Logger.debug("[HttpUtils] sending http request to: "+urlStr);
+        Logger.debug("[HttpUtils] sending http request to: " + urlStr);
         try {
             URL url = new URL(urlStr);
 
             HttpURLConnection urlConnection = null;
             urlConnection = (HttpURLConnection) url.openConnection();
+            int code = urlConnection.getResponseCode();
+            Logger.debug("code:" + code);
             InputStream in = null;
             in = new BufferedInputStream(urlConnection.getInputStream());
             String txtReponse = streamToString(in);
@@ -74,6 +79,16 @@ public class HttpUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String concatParams(Map<String,String> params){
+
+        ArrayList<String> list=new ArrayList<String>();
+        //Parcour les paramêtres
+        for(Map.Entry<String,String> entry : params.entrySet()){
+            list.add(entry.getKey()+"="+entry.getValue());
+        }
+        return TextUtils.join("&", list);
     }
 
 }

@@ -1,26 +1,24 @@
 package com.example.remy.mmsongquizz.activities;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 import com.example.remy.mmsongquizz.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import services.MusicStoryTokenManager;
+import models.Artist;
+import models.Genre;
+import services.ArtistManager;
+import services.GenreManager;
 import utils.AsyncHttpRequest;
+import utils.EchonestUtils;
 import utils.HttpUtils;
 import utils.Logger;
-import utils.MusicStoryEncryption;
-import dagger.ObjectGraph;
-import utils.MMQuizzModule;
-import services.TrackManager;
+
 public class MainActivity extends BaseActivity {
     private Button startBtn;
 
@@ -35,21 +33,20 @@ public class MainActivity extends BaseActivity {
 
         initView();
 
-        MusicStoryTokenManager tokenManager = application.getContainer().get(MusicStoryTokenManager.class);
-        tokenManager.getToken();
 
-        String baseUrl = "http://api.music-story.com/artist/search";
-        HashMap<String,String> param = new HashMap<>();
-        param.put("name", "Bob");
-        String signedUrl= MusicStoryEncryption.signUrl(baseUrl,param);
-        Logger.debug("signedUrl" + signedUrl);
 
-        HttpUtils httpUtils = application.getContainer().get(HttpUtils.class);
+        GenreManager genreManager = application.getContainer().get(GenreManager.class);
+        ArtistManager artistManager = application.getContainer().get(ArtistManager.class);
 
-        AsyncHttpRequest req = httpUtils.asyncRequest(signedUrl);
+        Genre genre = genreManager.getRandom();
+        Logger.debug("random genre: " + genre.getName());
 
-        String requestResult = req.GetResult();
-        Logger.debug("result: " + requestResult);
+        ArrayList<Artist> artists = artistManager.getByGenre(genre.getName());
+        for(Artist artist : artists){
+            Logger.debug("artist id:" + artist.getId()+" name:" + artist.getName());
+        }
+
+
     }
 
     private void initView(){
