@@ -43,11 +43,16 @@ public class GenreManager {
     }
 
     public Genre getRandom() {
-        ArrayList<Genre> genres = getAll();
-        Random randomGenerator = new Random();
-        int index = randomGenerator.nextInt(genres.size());
-        Genre genre = genres.get(index);
-        return genre;
+        return new Genre("pop");
+//        ArrayList<Genre> genres = getAll();
+//        int count = genres.size();
+//        if(count<=0){
+//            return null;
+//        }
+//        Random randomGenerator = new Random();
+//        int index = randomGenerator.nextInt(count);
+//        Genre genre = genres.get(index);
+//        return genre;
     }
 
     public ArrayList<Genre> getAll(){
@@ -77,7 +82,7 @@ public class GenreManager {
             JSONArray jsonGenres = jsonResponse.getJSONArray("genres");
             for (int i = 0; i < jsonGenres.length(); i++) {
                 JSONObject jsonGenre = jsonGenres.getJSONObject(i);
-                Genre genre = new Genre(jsonGenre.getString("name"));
+                Genre genre = Genre.createFromJson(jsonGenre);
                 genres.add(genre);
             }
         } catch (JSONException e) {

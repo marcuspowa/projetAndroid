@@ -1,5 +1,6 @@
 package utils;
 
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -44,13 +45,13 @@ public class HttpUtils {
 
             HttpURLConnection urlConnection = null;
             urlConnection = (HttpURLConnection) url.openConnection();
-            int code = urlConnection.getResponseCode();
-            Logger.debug("code:" + code);
             InputStream in = null;
             in = new BufferedInputStream(urlConnection.getInputStream());
-            String txtReponse = streamToString(in);
+            String txtResponse = streamToString(in);
+            int code = urlConnection.getResponseCode();
+            Logger.debug("HTTP code:" + code);
             urlConnection.disconnect();
-            return txtReponse;
+            return txtResponse;
         } catch (MalformedURLException e) {
             Logger.error("MalformedURLException in HttpUtils.request",e);
             e.printStackTrace();
@@ -86,7 +87,7 @@ public class HttpUtils {
         ArrayList<String> list=new ArrayList<String>();
         //Parcour les paramêtres
         for(Map.Entry<String,String> entry : params.entrySet()){
-            list.add(entry.getKey()+"="+entry.getValue());
+            list.add(entry.getKey()+"="+Uri.encode(entry.getValue(), "UTF-8"));
         }
         return TextUtils.join("&", list);
     }

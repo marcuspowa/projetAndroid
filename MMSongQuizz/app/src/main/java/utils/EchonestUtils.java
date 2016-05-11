@@ -27,6 +27,10 @@ public class EchonestUtils {
     public static final String BASE_URL = "http://developer.echonest.com/api/v4/";
 
     public static boolean getSuccessFromReponse(String response){
+        if(null == response){
+            Logger.warn("response is null");
+            return false;
+        }
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(response);
@@ -36,8 +40,8 @@ public class EchonestUtils {
             if( code == 0 ){
                 return true;
             }
-            String jsonMessage = jsonStatus.getString("message");
-
+            String message = jsonStatus.getString("message");
+            Logger.info("Echonest Error ("+code+") Message: " + message);
         } catch (JSONException e) {
             Logger.warn("Echonest Response error", e);
         }

@@ -12,8 +12,10 @@ import java.util.HashMap;
 
 import models.Artist;
 import models.Genre;
+import models.Track;
 import services.ArtistManager;
 import services.GenreManager;
+import services.TrackManager;
 import utils.AsyncHttpRequest;
 import utils.EchonestUtils;
 import utils.HttpUtils;
@@ -37,14 +39,7 @@ public class MainActivity extends BaseActivity {
 
         GenreManager genreManager = application.getContainer().get(GenreManager.class);
         ArtistManager artistManager = application.getContainer().get(ArtistManager.class);
-
-        Genre genre = genreManager.getRandom();
-        Logger.debug("random genre: " + genre.getName());
-
-        ArrayList<Artist> artists = artistManager.getByGenre(genre.getName());
-        for(Artist artist : artists){
-            Logger.debug("artist id:" + artist.getId()+" name:" + artist.getName());
-        }
+        TrackManager trackManager = application.getContainer().get(TrackManager.class);
 
 
     }

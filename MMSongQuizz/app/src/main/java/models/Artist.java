@@ -1,5 +1,8 @@
 package models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -8,6 +11,7 @@ import java.util.ArrayList;
 public class Artist {
     private String id;
     private String name;
+    private Genre genre;
     private ArrayList<Track> tracks;
 
     public Artist(String id, String name){
@@ -24,9 +28,21 @@ public class Artist {
         return name;
     }
 
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
     public String getId() {
         return id;
     }
 
 
+    public static Artist createFromJson(JSONObject jsonObject) throws JSONException {
+        Artist artist = new Artist(jsonObject.getString("id"), jsonObject.getString("name"));
+        return artist;
+    }
 }
