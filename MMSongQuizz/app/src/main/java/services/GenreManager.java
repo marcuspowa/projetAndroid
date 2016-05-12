@@ -43,7 +43,7 @@ public class GenreManager {
     }
 
     public Genre getRandom() {
-        return new Genre("pop");
+        return new Genre("french pop");
 //        ArrayList<Genre> genres = getAll();
 //        int count = genres.size();
 //        if(count<=0){

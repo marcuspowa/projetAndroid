@@ -13,7 +13,8 @@ import services.*;
             HttpUtils.class,
             QuestionManager.class,
             GenreManager.class,
-            ArtistManager.class
+            ArtistManager.class,
+            AsyncDataFetcher.class
     }
 )
 public class MMQuizzModule {

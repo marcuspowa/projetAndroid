@@ -37,7 +37,7 @@ public class TrackManager {
     }
 
     public Track getRandom(Artist artist){
-        ArrayList<Track> tracks = getByArtist(artist);
+        ArrayList<Track> tracks = removeDuplicatedObjects(getByArtist(artist));
         int count = tracks.size();
         if(count<=0){
             return null;
@@ -87,5 +87,21 @@ public class TrackManager {
             Logger.error("[GenreManager] json error", e);
         }
         return tracks;
+    }
+
+    public ArrayList<Track> removeDuplicatedObjects(ArrayList<Track> tracks){
+        ArrayList<Track> result = new ArrayList<>();
+        for(Track trackToAdd : tracks){
+            boolean alreadyAdded = false;
+            for(Track track : result){
+                if(track.getTitle().equals(trackToAdd.getTitle())){
+                    alreadyAdded = true;
+                }
+            }
+            if(!alreadyAdded){
+                result.add(trackToAdd);
+            }
+        }
+        return result;
     }
 }
