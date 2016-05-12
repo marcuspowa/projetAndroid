@@ -1,5 +1,7 @@
 package utils;
 
+import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -10,6 +12,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -35,7 +39,7 @@ public class HttpUtils {
 
 
     public String request(String urlStr) {
-        Logger.debug("[HttpUtils] sending http request to: "+urlStr);
+        Logger.debug("[HttpUtils] sending http request to: " + urlStr);
         try {
             URL url = new URL(urlStr);
 
@@ -43,9 +47,11 @@ public class HttpUtils {
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = null;
             in = new BufferedInputStream(urlConnection.getInputStream());
-            String txtReponse = streamToString(in);
+            String txtResponse = streamToString(in);
+            int code = urlConnection.getResponseCode();
+            Logger.debug("HTTP code:" + code);
             urlConnection.disconnect();
-            return txtReponse;
+            return txtResponse;
         } catch (MalformedURLException e) {
             Logger.error("MalformedURLException in HttpUtils.request",e);
             e.printStackTrace();
@@ -74,6 +80,16 @@ public class HttpUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String concatParams(Map<String,String> params){
+
+        ArrayList<String> list=new ArrayList<String>();
+        //Parcour les paramêtres
+        for(Map.Entry<String,String> entry : params.entrySet()){
+            list.add(entry.getKey()+"="+Uri.encode(entry.getValue(), "UTF-8"));
+        }
+        return TextUtils.join("&", list);
     }
 
 }

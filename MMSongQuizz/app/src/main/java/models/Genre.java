@@ -1,14 +1,24 @@
 package models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by remy on 08/03/2016.
  */
 public class Genre {
-    private int id;
     private String name;
 
-    public Genre(int id, String name) {
-        this.id = id;
+    public Genre(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+
+    public static Genre createFromJson(JSONObject jsonObject) throws JSONException {
+        return new Genre(jsonObject.getString("name"));
     }
 }
