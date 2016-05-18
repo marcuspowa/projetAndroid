@@ -24,6 +24,10 @@ public class Artist {
         return tracks;
     }
 
+    public void setTracks(ArrayList<Track> tracks) {
+        this.tracks = tracks;
+    }
+
     public String getName() {
         return name;
     }

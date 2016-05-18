@@ -43,6 +43,10 @@ public abstract class AbstractSpotifyActivity extends BaseActivity implements
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
+    public Player getmPlayer() {
+        return mPlayer;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);

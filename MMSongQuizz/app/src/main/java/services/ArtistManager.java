@@ -62,6 +62,7 @@ public class ArtistManager {
         params.put("api_key",EchonestUtils.API_KEY);
         params.put("genre",genre.getName());
         params.put("bucket","songs");
+        params.put("results","100");
 
         String url = EchonestUtils.BASE_URL+"artist/search?"+HttpUtils.concatParams(params);
 

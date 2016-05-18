@@ -37,7 +37,10 @@ public class TrackManager {
     }
 
     public Track getRandom(Artist artist){
-        ArrayList<Track> tracks = removeDuplicatedObjects(getByArtist(artist));
+        ArrayList<Track> tracks = artist.getTracks();
+        if(null == tracks || tracks.size() <= 0){
+            tracks = getByArtist(artist);
+        }
         int count = tracks.size();
         if(count<=0){
             return null;
@@ -60,6 +63,7 @@ public class TrackManager {
         params.put("artist_id", artist.getId());
         params.put("bucket", "id:spotify");
         params.put("sort", "song_hotttnesss-desc");
+        params.put("results","100");
 
 
         String url = EchonestUtils.BASE_URL+"song/search?"+ HttpUtils.concatParams(params)+"&bucket=tracks";
@@ -86,7 +90,7 @@ public class TrackManager {
         } catch (JSONException e) {
             Logger.error("[GenreManager] json error", e);
         }
-        return tracks;
+        return removeDuplicatedObjects(tracks);
     }
 
     public ArrayList<Track> removeDuplicatedObjects(ArrayList<Track> tracks){
@@ -94,7 +98,7 @@ public class TrackManager {
         for(Track trackToAdd : tracks){
             boolean alreadyAdded = false;
             for(Track track : result){
-                if(track.getTitle().equals(trackToAdd.getTitle())){
+                if(track.getTitle().toLowerCase().replace(" ", "").equals(trackToAdd.getTitle().toLowerCase().replace(" ", ""))){
                     alreadyAdded = true;
                 }
             }

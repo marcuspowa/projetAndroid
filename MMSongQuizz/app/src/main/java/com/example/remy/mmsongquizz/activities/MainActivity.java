@@ -22,7 +22,7 @@ import utils.AsyncHttpRequest;
 import utils.EchonestUtils;
 import utils.HttpUtils;
 import utils.Logger;
-public class MainActivity extends AbstractSpotifyActivity {
+public class MainActivity extends BaseActivity {
 
     private Button startBtn;
 
@@ -31,6 +31,7 @@ public class MainActivity extends AbstractSpotifyActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkNetwork();
 
         startBtn = (Button) findViewById(R.id.startBtn);
 
@@ -43,10 +44,7 @@ public class MainActivity extends AbstractSpotifyActivity {
         TrackManager trackManager = application.getContainer().get(TrackManager.class);
     }
 
-    @Override
-    public void onTokenReceived() {
-        this.startPlayer("spotify:track:0pLfOjfsw8E3id7eCpGCci");
-    }
+
 
     private void initView(){
         startBtn.setOnClickListener(new View.OnClickListener() {

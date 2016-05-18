@@ -1,15 +1,19 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.inject.Inject;
 
+import exceptions.MMSongQuizzException;
 import interfaces.IQuestion;
 import models.Artist;
 import models.Genre;
-import models.Question;
+import models.BasicQuestion;
+import models.SoundQuestion;
 import models.Track;
 import utils.Logger;
+import utils.QuestionType;
 
 /**
  * Created by remy on 22/03/2016.
@@ -28,9 +32,14 @@ public class QuestionManager {
     }
 
     public IQuestion getRandomQuestion(){
+        return getQuestion(QuestionType.getRandom());
+    }
+
+    public IQuestion getQuestion(QuestionType type){
         Genre genre = null;
         Artist artist = null;
-        Track track = null;
+        ArrayList<Track> tracks;
+        Random randomGenerator = new Random();
 
         genre = genreManager.getRandom();
         Logger.debug("random genre: " + genre.getName());
@@ -38,22 +47,31 @@ public class QuestionManager {
             artist = artistManager.getRandombyGenre(genre);
             Logger.debug("random Artist: " + artist.getName());
         }
+        tracks = trackManager.getByArtist(artist);
+        artist.setTracks(tracks);
 
-        while(null == track){
-            track = trackManager.getRandom(artist);
-            Logger.debug("tracks id:" + track.getId()+" title:" + track.getTitle()+ " spotifyId:" + track.getSpotifyId());
+        if(type == QuestionType.BASIC){ // BASIC
+            ArrayList<Track> tmpTracks = new ArrayList<>();
+            tmpTracks.addAll(tracks);
+            while (tmpTracks.size() > 3){
+                tmpTracks.remove(randomGenerator.nextInt(tracks.size()));
+            }
+            BasicQuestion question = new BasicQuestion(artist, tmpTracks);
+            return question;
+        }
+        else if(type == QuestionType.SOUND){ // MUSIC
+            Track track = trackManager.getRandom(artist);
+            while (track.getSpotifyId() == null){
+                track = trackManager.getRandom(artist);
+            }
+            SoundQuestion question = new SoundQuestion(artist, track);
+            return question;
+        }
+        else if(type == QuestionType.IMAGE){ // IMAGE
+            Logger.error("image type not implemented yet");
         }
 
-
-        return createQuestion(artist, track);
-    }
-
-    private IQuestion createQuestion(Artist artist, Track track){
-
-        Question question = new Question("Quel artiste interprète '"+track.getTitle()+"'?", artist.getName());
-
-
-        return question;
+        return null;
     }
 
 
