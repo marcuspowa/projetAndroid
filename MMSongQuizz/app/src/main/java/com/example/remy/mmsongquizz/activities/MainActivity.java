@@ -24,6 +24,7 @@ import utils.HttpUtils;
 import utils.Logger;
 public class MainActivity extends BaseActivity {
 
+    private Button genrePrefsBtn;
     private Button startBtn;
 
     @Override
@@ -33,6 +34,7 @@ public class MainActivity extends BaseActivity {
 
         checkNetwork();
 
+        genrePrefsBtn = (Button) findViewById(R.id.main_genre_pref);
         startBtn = (Button) findViewById(R.id.startBtn);
 
         initView();
@@ -47,6 +49,13 @@ public class MainActivity extends BaseActivity {
 
 
     private void initView(){
+        genrePrefsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toGenrePrefs = new Intent(MainActivity.this, GenreActivity.class);
+                startActivity(toGenrePrefs);
+            }
+        });
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

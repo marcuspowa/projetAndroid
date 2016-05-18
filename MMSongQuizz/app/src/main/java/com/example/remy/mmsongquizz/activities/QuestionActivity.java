@@ -46,15 +46,12 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         playerStart = (Button) findViewById(R.id.player_play_btn);
         playerPause = (Button) findViewById(R.id.player_pause_btn);
 
-
-
+        setCurrentQuestion(questionManager.getRandomQuestion());
 
         initView();
     }
 
     private void initView(){
-        setCurrentQuestion(questionManager.getRandomQuestion());
-
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +95,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         if(currentQuestion.getType().equals(QuestionType.SOUND)){
             playerLayout.setVisibility(LinearLayout.VISIBLE);
+            authenticateSpotify();
         }
         else {
             playerLayout.setVisibility(LinearLayout.GONE);

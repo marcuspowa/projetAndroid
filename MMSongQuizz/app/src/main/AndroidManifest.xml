@@ -20,11 +20,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.NetworkErrorActivity" />
-        <activity android:name=".activities.QuestionActivity"></activity>
+        <activity android:name=".activities.QuestionActivity" />
         <!-- Needed for LoginActivity to work -->
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".activities.GenreActivity"></activity>
     </application>
 
 </manifest>

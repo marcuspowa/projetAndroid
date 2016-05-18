@@ -54,7 +54,7 @@ public class QuestionManager {
             ArrayList<Track> tmpTracks = new ArrayList<>();
             tmpTracks.addAll(tracks);
             while (tmpTracks.size() > 3){
-                tmpTracks.remove(randomGenerator.nextInt(tracks.size()));
+                tmpTracks.remove(randomGenerator.nextInt(tmpTracks.size()));
             }
             BasicQuestion question = new BasicQuestion(artist, tmpTracks);
             return question;
@@ -69,6 +69,7 @@ public class QuestionManager {
         }
         else if(type == QuestionType.IMAGE){ // IMAGE
             Logger.error("image type not implemented yet");
+            return getQuestion(QuestionType.SOUND);
         }
 
         return null;

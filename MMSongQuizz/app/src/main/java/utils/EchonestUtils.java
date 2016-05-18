@@ -28,7 +28,7 @@ public class EchonestUtils {
 
     public static boolean getSuccessFromReponse(String response){
         if(null == response){
-            Logger.warn("response is null");
+            Logger.warn("[EchonestUtils] response is null");
             return false;
         }
         JSONObject jsonObject = null;
@@ -41,9 +41,9 @@ public class EchonestUtils {
                 return true;
             }
             String message = jsonStatus.getString("message");
-            Logger.info("Echonest Error ("+code+") Message: " + message);
+            Logger.info("[EchonestUtils] Echonest Error ("+code+") Message: " + message);
         } catch (JSONException e) {
-            Logger.warn("Echonest Response error", e);
+            Logger.warn("[EchonestUtils] Echonest Response error", e);
         }
         return false;
     }
