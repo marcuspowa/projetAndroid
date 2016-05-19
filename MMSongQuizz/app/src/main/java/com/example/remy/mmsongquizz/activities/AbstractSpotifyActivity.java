@@ -26,7 +26,7 @@ public abstract class AbstractSpotifyActivity extends BaseActivity implements
     private static final String REDIRECT_URI = "com.example.remy.mmsongquizz://callback";
 
     // Request code that will be passed together with authentication result to the onAuthenticationResult callback
-    // Can be any integer
+    // Can be set to any integer
     private static final int REQUEST_CODE = 1337;
 
     private Player mPlayer;
@@ -62,9 +62,15 @@ public abstract class AbstractSpotifyActivity extends BaseActivity implements
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
-                Logger.debug("AccessTokenSpotify : "+response.getAccessToken());
                 this.accessToken=response.getAccessToken();
+                Logger.debug("AccessTokenSpotify : "+this.accessToken);
                 onTokenReceived();
+            } else if (response.getType() == AuthenticationResponse.Type.ERROR) {
+                Logger.debug("AccessTokenSpotify LOGIN ERROR");
+
+            }
+            else{
+                Logger.debug(response.getType().toString());
             }
         }
     }
@@ -100,7 +106,7 @@ public abstract class AbstractSpotifyActivity extends BaseActivity implements
 
     @Override
     public void onLoginFailed(Throwable error) {
-        Logger.debug( "Login failed");
+        Logger.debug( "Login failed "+error.getMessage());
     }
 
     @Override

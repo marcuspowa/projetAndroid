@@ -15,9 +15,11 @@ import java.util.HashMap;
 import models.Artist;
 import models.Genre;
 import models.Track;
+import models.User;
 import services.ArtistManager;
 import services.GenreManager;
 import services.TrackManager;
+import services.UserManager;
 import utils.AsyncHttpRequest;
 import utils.EchonestUtils;
 import utils.HttpUtils;
@@ -37,13 +39,21 @@ public class MainActivity extends BaseActivity {
         genrePrefsBtn = (Button) findViewById(R.id.main_genre_pref);
         startBtn = (Button) findViewById(R.id.startBtn);
 
-        initView();
-
-
 
         GenreManager genreManager = application.getContainer().get(GenreManager.class);
+        UserManager userManager = application.getContainer().get(UserManager.class);
         ArtistManager artistManager = application.getContainer().get(ArtistManager.class);
         TrackManager trackManager = application.getContainer().get(TrackManager.class);
+
+        if(userManager.getCurrentUser() == null){
+            User userTest = new User();
+            userTest.setId(1);
+            userTest.setName("toto");
+            userManager.setCurrentUser(userTest);
+        }
+
+
+        initView();
     }
 
 

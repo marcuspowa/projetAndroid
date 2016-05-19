@@ -14,6 +14,7 @@ import services.*;
             QuestionManager.class,
             GenreManager.class,
             ArtistManager.class,
+            UserManager.class,
             AsyncDataFetcher.class
     }
 )

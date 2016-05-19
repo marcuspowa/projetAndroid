@@ -10,6 +10,7 @@ public interface IQuestion {
 
     QuestionType getType();
     String getQuestion();
+    String getResponse();
     boolean checkResponse(String response);
 
 }

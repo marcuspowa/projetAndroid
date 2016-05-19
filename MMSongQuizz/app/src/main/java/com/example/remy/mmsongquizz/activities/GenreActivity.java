@@ -1,6 +1,7 @@
 package com.example.remy.mmsongquizz.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -19,11 +20,13 @@ import java.util.ArrayList;
 
 import models.Genre;
 import services.GenreManager;
+import services.UserManager;
 import utils.Logger;
 
 public class GenreActivity extends BaseActivity {
 
     private GenreManager genreManager;
+    private UserManager userManager;
 
     private Button homeBtn;
     private Button submitBtn;
@@ -35,6 +38,7 @@ public class GenreActivity extends BaseActivity {
         setContentView(R.layout.activity_genre);
 
         genreManager = application.getContainer().get(GenreManager.class);
+        userManager = application.getContainer().get(UserManager.class);
 
         homeBtn = (Button) findViewById(R.id.genre_home_btn);
         submitBtn = (Button) findViewById(R.id.genre_submit);
@@ -48,45 +52,70 @@ public class GenreActivity extends BaseActivity {
 
         genreListView.setAdapter(new GenreAdapter(this, android.R.layout.simple_list_item_multiple_choice, genres.toArray(new Genre[genres.size()])));
 
+        for (int i = 0; i < genreListView.getAdapter().getCount(); i++) {
+            Genre genreInList = (Genre)genreListView.getAdapter().getItem(i);
+            for(Genre genre : userManager.getCurrentUser().getPreferedGenres()){
+                if(genreInList.getName().equals(genre.getName())){
+                    genreListView.setItemChecked(i, true);
+                    break;
+                }
+            }
+        }
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SparseBooleanArray checked = genreListView.getCheckedItemPositions();
+                ArrayList<Genre> selectedGenres = getSelectedGenres();
+                userManager.getCurrentUser().setPreferedGenres(selectedGenres);
+            }
+        });
 
-                for (int i = 0; i < genreListView.getAdapter().getCount(); i++) {
-                    if (checked.get(i)) {
-                        Genre genre = (Genre)genreListView.getAdapter().getItem(i);
-                        Logger.debug("CHECKED " + genre.getName());
-                    }
-                }
-
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toHome = new Intent(GenreActivity.this, MainActivity.class);
+                startActivity(toHome);
             }
         });
 
 
     }
 
+    private ArrayList<Genre> getSelectedGenres(){
+        ArrayList<Genre> selectedGenres = new ArrayList<Genre>();
+        SparseBooleanArray checked = genreListView.getCheckedItemPositions();
+        for (int i = 0; i < genreListView.getAdapter().getCount(); i++) {
+            if (checked.get(i)) {
+                Genre genre = (Genre)genreListView.getAdapter().getItem(i);
+                Logger.debug("CHECKED " + genre.getName());
+                selectedGenres.add(genre);
+            }
+        }
+        return selectedGenres;
+    }
 
 }
 class GenreAdapter extends ArrayAdapter<Genre>{
-    Context context;
-    int layoutResourceId;
-    Genre data[] = null;
+    private Context context;
+    private int layoutResourceId;
+    private Genre data[] = null;
+    private ArrayList<Genre> preselected;
 
     public GenreAdapter(Context context, int layoutResourceId, Genre[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = data;
+        this.preselected = preselected;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        Genre currentGenre = getItem(position);
         View v = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_multiple_choice, null);
         TextView tv = (TextView) v.findViewById(android.R.id.text1);
-        tv.setText(getItem(position).getName());
+        tv.setText(currentGenre.getName());
 
 
         return v;
