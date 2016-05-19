@@ -99,6 +99,7 @@ public class ArtistManager {
         HashMap<String, String> params = new HashMap<>();
         params.put("api_key",EchonestUtils.API_KEY);
         params.put("genre",genre.getName());
+        params.put("results","100");
 
         String url = EchonestUtils.BASE_URL+"artist/top_hottt?"+HttpUtils.concatParams(params);
 
