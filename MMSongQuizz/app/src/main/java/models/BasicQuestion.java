@@ -34,8 +34,13 @@ public class BasicQuestion implements IQuestion{
     }
 
     @Override
+    public String getResponse() {
+        return this.artist.getName();
+    }
+
+    @Override
     public boolean checkResponse(String response) {
-        return this.artist.getName().equals(response);
+        return this.getResponse().equals(response);
     }
 
 }

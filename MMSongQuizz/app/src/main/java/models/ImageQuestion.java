@@ -20,6 +20,11 @@ public class ImageQuestion implements IQuestion {
     }
 
     @Override
+    public String getResponse() {
+        return null;
+    }
+
+    @Override
     public boolean checkResponse(String response) {
         return false;
     }

@@ -107,6 +107,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         currentQuestion = question;
         questionTextView.setText(currentQuestion.getQuestion());
         messageText.setText("");
+        responseInput.setText(currentQuestion.getResponse()); //TODO REMOVE PREFILLED RESPONSE
 
         if(currentQuestion.getType().equals(QuestionType.SOUND)){
             playerLayout.setVisibility(LinearLayout.VISIBLE);

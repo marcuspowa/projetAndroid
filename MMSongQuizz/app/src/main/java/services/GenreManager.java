@@ -25,10 +25,12 @@ public class GenreManager {
     private static boolean cached = false;
 
     private HttpUtils httpUtils;
+    private UserManager userManager;
 
     @Inject
-    public GenreManager(HttpUtils httpUtils){
+    public GenreManager(HttpUtils httpUtils, UserManager userManager){
         this.httpUtils = httpUtils;
+        this.userManager = userManager;
     }
 
     public Genre get(String name) {
@@ -43,16 +45,17 @@ public class GenreManager {
     }
 
     public Genre getRandom() {
-        return new Genre("rock");
+//        return new Genre("rock");
 //        ArrayList<Genre> genres = getAll();
-//        int count = genres.size();
-//        if(count<=0){
-//            return null;
-//        }
-//        Random randomGenerator = new Random();
-//        int index = randomGenerator.nextInt(count);
-//        Genre genre = genres.get(index);
-//        return genre;
+        ArrayList<Genre> genres = userManager.getCurrentUser().getPreferedGenres();
+        int count = genres.size();
+        if(count<=0){
+            return null;
+        }
+        Random randomGenerator = new Random();
+        int index = randomGenerator.nextInt(count);
+        Genre genre = genres.get(index);
+        return genre;
     }
 
     public ArrayList<Genre> getAll(){
@@ -83,7 +86,9 @@ public class GenreManager {
             for (int i = 0; i < jsonGenres.length(); i++) {
                 JSONObject jsonGenre = jsonGenres.getJSONObject(i);
                 Genre genre = Genre.createFromJson(jsonGenre);
-                genres.add(genre);
+                if(genre.getName().contains("rock")){
+                    genres.add(genre);
+                }
             }
         } catch (JSONException e) {
             Logger.error("[GenreManager] json error",e);
