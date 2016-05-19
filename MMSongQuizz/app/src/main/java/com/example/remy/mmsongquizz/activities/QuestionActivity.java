@@ -1,10 +1,12 @@
 package com.example.remy.mmsongquizz.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,8 +28,9 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     private Button submitBtn;
     private TextView messageText;
     private LinearLayout playerLayout;
-    private Button playerStart;
-    private Button playerPause;
+    private ImageButton playerStartBtn;
+    private ImageButton playerRestartBtn;
+    private boolean isplaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         checkNetwork();
 
+        isplaying = true;
         questionManager = application.getContainer().get(QuestionManager.class);
 
         questionTextView = (TextView) findViewById(R.id.questionTextView);
@@ -43,8 +47,8 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         submitBtn = (Button) findViewById(R.id.questionSubmitBtn);
         messageText = (TextView) findViewById(R.id.questionMessageText);
         playerLayout = (LinearLayout) findViewById(R.id.player_layout);
-        playerStart = (Button) findViewById(R.id.player_play_btn);
-        playerPause = (Button) findViewById(R.id.player_pause_btn);
+        playerStartBtn = (ImageButton) findViewById(R.id.question_play_button);
+        playerRestartBtn = (ImageButton) findViewById(R.id.question_restart_button);
 
         setCurrentQuestion(questionManager.getRandomQuestion());
 
@@ -56,6 +60,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
             @Override
             public void onClick(View v) {
                 String response = responseInput.getText().toString();
+                getmPlayer().pause();
                 if (currentQuestion.checkResponse(response)) {
                     application.notify("Réponse correcte !");
                     setCurrentQuestion(questionManager.getRandomQuestion());
@@ -65,19 +70,29 @@ public class QuestionActivity extends AbstractSpotifyActivity {
             }
         });
 
-        playerStart.setOnClickListener(new View.OnClickListener() {
+        playerStartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               
+                if(isplaying){
+                    isplaying=false;
+                    QuestionActivity.this.getmPlayer().pause();
+                    QuestionActivity.this.playerStartBtn.setImageResource(R.mipmap.play);
+                }else{
+                    isplaying=true;
+                    QuestionActivity.this.getmPlayer().resume();
+                    QuestionActivity.this.playerStartBtn.setImageResource(R.mipmap.pause);
+                }
+            }
+        });
+        playerRestartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 QuestionActivity.this.getmPlayer().seekToPosition(0);
                 QuestionActivity.this.getmPlayer().resume();
             }
         });
-        playerPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QuestionActivity.this.getmPlayer().pause();
-            }
-        });
+
     }
 
     @Override
@@ -95,6 +110,8 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         if(currentQuestion.getType().equals(QuestionType.SOUND)){
             playerLayout.setVisibility(LinearLayout.VISIBLE);
+            this.playerStartBtn.setImageResource(R.mipmap.pause);
+            this.isplaying=true;
             authenticateSpotify();
         }
         else {

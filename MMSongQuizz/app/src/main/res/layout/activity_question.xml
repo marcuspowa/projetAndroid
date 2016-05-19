@@ -51,20 +51,24 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="41dp"
-        android:id="@+id/player_layout">
+        android:id="@+id/player_layout"
+        android:weightSum="1"
+        android:background="#00ffffff">
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Play"
-            android:id="@+id/player_play_btn" />
+        <ImageButton
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:id="@+id/question_play_button"
+            android:src="@mipmap/play"
+            android:scaleType="fitXY"
+            android:background="@null"/>
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pause"
-            android:id="@+id/player_pause_btn" />
+        <ImageButton
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:id="@+id/question_restart_button"
+            android:src="@mipmap/restart"
+            android:scaleType="fitXY"
+            android:background="@null"/>
     </LinearLayout>
 </RelativeLayout>

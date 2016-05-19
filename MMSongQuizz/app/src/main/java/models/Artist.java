@@ -47,6 +47,7 @@ public class Artist {
 
     public static Artist createFromJson(JSONObject jsonObject) throws JSONException {
         Artist artist = new Artist(jsonObject.getString("id"), jsonObject.getString("name"));
+
         return artist;
     }
 }

@@ -46,13 +46,25 @@ public class Track {
     }
 
     public static Track createFromJson(JSONObject jsonObject) throws JSONException {
-        Track track = new Track(jsonObject.getString("id"), jsonObject.getString("title"));
+        Track track = new Track(jsonObject.getString("id"), formatTitle(jsonObject.getString("title")));
         JSONArray jsonTracks = jsonObject.getJSONArray("tracks");
         if(jsonTracks.length() > 0){
             String spotId = jsonTracks.getJSONObject(0).getString("foreign_id");
             track.setSpotifyId(spotId);
         }
-
         return track;
+    }
+
+    public static String formatTitle(String title){
+        String newTitle="";
+        int i =0;
+        while(i!=title.length()){
+            if(title.charAt(i)=='('){
+                break;
+            }
+            newTitle+=title.charAt(i);
+            i++;
+        }
+      return newTitle;
     }
 }
