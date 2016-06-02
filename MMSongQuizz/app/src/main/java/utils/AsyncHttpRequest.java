@@ -2,8 +2,6 @@ package utils;
 
 import android.os.AsyncTask;
 
-import org.json.JSONObject;
-
 import java.util.concurrent.ExecutionException;
 
 /**

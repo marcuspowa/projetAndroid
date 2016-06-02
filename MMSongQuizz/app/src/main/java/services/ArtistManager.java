@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.inject.Inject;
@@ -30,17 +29,7 @@ public class ArtistManager {
         this.httpUtils = httpUtils;
     }
 
-    public Artist get(String title) {
-        return null;
-    }
 
-    public Artist getRandom() {
-        Artist artist = new Artist("1", "lynyrd skynyrd");
-        artist.getTracks().add(new Track("1", "free bird"));
-        artist.getTracks().add(new Track("2", "sweet home alabama"));
-        artist.getTracks().add(new Track("3", "last rebel"));
-        return artist;
-    }
     public Artist getRandombyGenre(Genre genre) {
         ArrayList<Artist> artists = getTopByGenre(genre);
         int count = artists.size();

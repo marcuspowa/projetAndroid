@@ -1,7 +1,5 @@
 package com.example.remy.mmsongquizz.activities;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,8 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.remy.mmsongquizz.R;
-
-import javax.inject.Inject;
 
 import interfaces.IQuestion;
 import models.SoundQuestion;
@@ -30,7 +26,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     private LinearLayout playerLayout;
     private ImageButton playerStartBtn;
     private ImageButton playerRestartBtn;
-    private boolean isplaying;
+    private boolean isPlaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +35,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         checkNetwork();
 
-        isplaying = true;
+        isPlaying = true;
         questionManager = application.getContainer().get(QuestionManager.class);
 
         questionTextView = (TextView) findViewById(R.id.questionTextView);
@@ -74,12 +70,12 @@ public class QuestionActivity extends AbstractSpotifyActivity {
             @Override
             public void onClick(View v) {
                
-                if(isplaying){
-                    isplaying=false;
+                if(isPlaying){
+                    isPlaying=false;
                     QuestionActivity.this.getmPlayer().pause();
                     QuestionActivity.this.playerStartBtn.setImageResource(R.mipmap.play);
                 }else{
-                    isplaying=true;
+                    isPlaying=true;
                     QuestionActivity.this.getmPlayer().resume();
                     QuestionActivity.this.playerStartBtn.setImageResource(R.mipmap.pause);
                 }
@@ -112,7 +108,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         if(currentQuestion.getType().equals(QuestionType.SOUND)){
             playerLayout.setVisibility(LinearLayout.VISIBLE);
             this.playerStartBtn.setImageResource(R.mipmap.pause);
-            this.isplaying=true;
+            this.isPlaying=true;
             authenticateSpotify();
         }
         else {

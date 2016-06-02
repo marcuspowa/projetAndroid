@@ -2,13 +2,11 @@ package com.example.remy.mmsongquizz.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,6 +17,7 @@ import com.example.remy.mmsongquizz.R;
 import java.util.ArrayList;
 
 import models.Genre;
+import services.CacheManager;
 import services.GenreManager;
 import services.UserManager;
 import utils.Logger;
@@ -68,6 +67,7 @@ public class GenreActivity extends BaseActivity {
                 SparseBooleanArray checked = genreListView.getCheckedItemPositions();
                 ArrayList<Genre> selectedGenres = getSelectedGenres();
                 userManager.getCurrentUser().setPreferedGenres(selectedGenres);
+                userManager.setCurrentUser(userManager.getCurrentUser(), true);
             }
         });
 

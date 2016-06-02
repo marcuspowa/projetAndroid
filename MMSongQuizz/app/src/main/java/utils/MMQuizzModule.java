@@ -1,7 +1,6 @@
 package utils;
 
 import dagger.Module;
-import models.Track;
 import services.*;
 
 /**
@@ -15,6 +14,7 @@ import services.*;
             GenreManager.class,
             ArtistManager.class,
             UserManager.class,
+            CacheManager.class,
             AsyncDataFetcher.class
     }
 )

@@ -28,13 +28,6 @@ public class TrackManager {
         this.httpUtils = httpUtils;
     }
 
-    public Track get(String title) {
-        return null;
-    }
-
-    public Track getRandom() {
-        return null;
-    }
 
     public Track getRandom(Artist artist){
         ArrayList<Track> tracks = artist.getTracks();

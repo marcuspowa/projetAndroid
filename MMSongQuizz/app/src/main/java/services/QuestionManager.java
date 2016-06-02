@@ -5,7 +5,6 @@ import java.util.Random;
 
 import javax.inject.Inject;
 
-import exceptions.MMSongQuizzException;
 import interfaces.IQuestion;
 import models.Artist;
 import models.Genre;

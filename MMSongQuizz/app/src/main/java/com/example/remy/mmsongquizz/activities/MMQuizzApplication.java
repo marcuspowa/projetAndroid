@@ -1,10 +1,11 @@
 package com.example.remy.mmsongquizz.activities;
 
 import android.app.Application;
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.widget.Toast;
+
 
 import dagger.ObjectGraph;
 import utils.Logger;
@@ -16,6 +17,7 @@ import utils.MMQuizzModule;
 public class MMQuizzApplication extends Application {
 
     public static final String NAME = "MMSongQuizz";
+    private static Context context;
     private ObjectGraph container;
 
     public MMQuizzApplication(){
@@ -23,8 +25,18 @@ public class MMQuizzApplication extends Application {
         container = ObjectGraph.create(new MMQuizzModule());
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        MMQuizzApplication.context = getApplicationContext();
+    }
+
     public ObjectGraph getContainer() {
         return container;
+    }
+
+    public static Context getContext() {
+        return MMQuizzApplication.context;
     }
 
     public void notify(String msg){

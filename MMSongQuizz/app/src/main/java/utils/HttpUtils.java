@@ -2,7 +2,6 @@ package utils;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
