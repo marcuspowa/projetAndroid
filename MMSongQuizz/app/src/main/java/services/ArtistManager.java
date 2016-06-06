@@ -112,7 +112,7 @@ public class ArtistManager {
                 artists.add(artist);
             }
         } catch (JSONException e) {
-            Logger.error("[GenreManager] json error", e);
+            Logger.error("[ArtistManager] json error", e);
         }
         return artists;
     }

@@ -1,23 +1,18 @@
 package com.example.remy.mmsongquizz.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.UI.GenreAdapter;
 import com.example.remy.mmsongquizz.R;
 
 import java.util.ArrayList;
 
 import models.Genre;
-import services.CacheManager;
 import services.GenreManager;
 import services.UserManager;
 import utils.Logger;
@@ -93,32 +88,6 @@ public class GenreActivity extends BaseActivity {
             }
         }
         return selectedGenres;
-    }
-
-}
-class GenreAdapter extends ArrayAdapter<Genre>{
-    private Context context;
-    private int layoutResourceId;
-    private Genre data[] = null;
-    private ArrayList<Genre> preselected;
-
-    public GenreAdapter(Context context, int layoutResourceId, Genre[] data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
-        this.context = context;
-        this.data = data;
-        this.preselected = preselected;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Genre currentGenre = getItem(position);
-        View v = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_multiple_choice, null);
-        TextView tv = (TextView) v.findViewById(android.R.id.text1);
-        tv.setText(currentGenre.getName());
-
-
-        return v;
     }
 
 }

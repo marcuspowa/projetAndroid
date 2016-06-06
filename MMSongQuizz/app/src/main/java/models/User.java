@@ -1,5 +1,7 @@
 package models;
 
+import android.text.TextUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,11 +64,13 @@ public class User implements Serializable {
         try {
             json.put("id", this.id);
             json.put("name", this.name);
-            JSONArray genres = new JSONArray();
-            for(Genre g : preferedGenres){
-                genres.put(g.toJson());
+            json.put("password", this.password);
+            json.put("points", this.points);
+            ArrayList<String> genreNames = new ArrayList<>();
+            for(Genre genre : preferedGenres){
+                genreNames.add(genre.getName());
             }
-            json.put("genres", genres);
+            json.put("preferedGenres", TextUtils.join(",", genreNames));
         } catch (JSONException e) {
             Logger.warn("User To Json error",e);
         }
@@ -78,9 +82,11 @@ public class User implements Serializable {
         try {
             user.setId(jsonUser.getInt("id"));
             user.setName(jsonUser.getString("name"));
-            JSONArray genresJson = jsonUser.getJSONArray("genres");
-            for(int i=0; i<genresJson.length(); i++) {
-                user.getPreferedGenres().add(Genre.fromJson(genresJson.getJSONObject(i)));
+            user.password = jsonUser.getString("password");
+            user.points = jsonUser.getInt("points");
+            String genres = jsonUser.getString("preferedGenres");
+            for(String genre : genres.split(",")) {
+                user.getPreferedGenres().add(new Genre(genre));
             }
         } catch (JSONException e) {
             Logger.warn("User From Json error",e);
