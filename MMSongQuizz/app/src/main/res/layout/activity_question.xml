@@ -13,17 +13,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/questionMessageText"
+        android:layout_below="@+id/questionSubmitBtn"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Question.."
         android:id="@+id/questionTextView"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="36dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/questionResponseInput"
-        android:layout_marginTop="114dp"
-        android:layout_below="@+id/questionTextView"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/dynamicLayout"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -35,40 +45,73 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/questionMessageText"
-        android:layout_below="@+id/questionSubmitBtn"
-        android:layout_alignParentStart="true" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/compteurQuestionLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/compteurQuestion"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/player_layout"
+            android:layout_alignEnd="@+id/player_layout"
+            android:layout_gravity="right|center_vertical" />
+    </FrameLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/questionTextView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="41dp"
-        android:id="@+id/player_layout"
-        android:weightSum="1"
-        android:background="#00ffffff">
+        android:layout_height="wrap_content"
+        android:id="@+id/dynamicLayout"
+        android:layout_below="@+id/compteurQuestionLayout">
 
-        <ImageButton
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:id="@+id/question_play_button"
-            android:src="@mipmap/play"
-            android:scaleType="fitXY"
-            android:background="@null"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/questionTextView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="41dp"
+            android:id="@+id/player_layout"
+            android:weightSum="1"
+            android:background="#00ffffff">
 
-        <ImageButton
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:id="@+id/question_restart_button"
-            android:src="@mipmap/restart"
-            android:scaleType="fitXY"
-            android:background="@null"/>
+            <ImageButton
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:id="@+id/question_play_button"
+                android:src="@mipmap/play"
+                android:scaleType="fitXY"
+                android:background="@null"/>
+
+            <ImageButton
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:id="@+id/question_restart_button"
+                android:src="@mipmap/restart"
+                android:scaleType="fitXY"
+                android:background="@null"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/questionMessageText"
+            android:layout_toEndOf="@+id/questionMessageText">
+
+            <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ImageWebview"
+                android:layout_width="fill_parent"
+                android:layout_height="134dp"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
     </LinearLayout>
 </RelativeLayout>

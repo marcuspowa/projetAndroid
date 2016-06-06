@@ -48,6 +48,7 @@ public class Track {
     public static Track createFromJson(JSONObject jsonObject) throws JSONException {
         Track track = new Track(jsonObject.getString("id"), formatTitle(jsonObject.getString("title")));
         JSONArray jsonTracks = jsonObject.getJSONArray("tracks");
+
         if(jsonTracks.length() > 0){
             String spotId = jsonTracks.getJSONObject(0).getString("foreign_id");
             track.setSpotifyId(spotId);

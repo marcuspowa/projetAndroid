@@ -26,6 +26,7 @@
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activities.GenreActivity"></activity>
+        <activity android:name=".activities.EndSessionActivity"></activity>
     </application>
 
 </manifest>

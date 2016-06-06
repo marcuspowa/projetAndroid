@@ -63,6 +63,7 @@ public class TrackManager {
         params.put("artist_id", artist.getId());
         params.put("bucket", "id:spotify");
         params.put("sort", "song_hotttnesss-desc");
+        params.put("song_type", "studio");
         params.put("results","100");
 
 
@@ -87,6 +88,7 @@ public class TrackManager {
                 track.setArtist(artist);
                 tracks.add(track);
             }
+
         } catch (JSONException e) {
             Logger.error("[GenreManager] json error", e);
         }

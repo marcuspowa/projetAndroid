@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,6 +16,7 @@ import com.example.remy.mmsongquizz.R;
 import javax.inject.Inject;
 
 import interfaces.IQuestion;
+import models.ImageQuestion;
 import models.SoundQuestion;
 import services.QuestionManager;
 import utils.Logger;
@@ -27,10 +29,14 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     private EditText responseInput;
     private Button submitBtn;
     private TextView messageText;
+    private TextView compteurQuestion;
     private LinearLayout playerLayout;
     private ImageButton playerStartBtn;
     private ImageButton playerRestartBtn;
     private boolean isplaying;
+    private int nbQuestion;
+    public static final int  nbQuestionParSession =10;
+    private WebView myWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         checkNetwork();
 
+        this.nbQuestion =0;
         isplaying = true;
         questionManager = application.getContainer().get(QuestionManager.class);
 
@@ -46,9 +53,11 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         responseInput = (EditText) findViewById(R.id.questionResponseInput);
         submitBtn = (Button) findViewById(R.id.questionSubmitBtn);
         messageText = (TextView) findViewById(R.id.questionMessageText);
+        this.compteurQuestion = (TextView) findViewById(R.id.compteurQuestion);
         playerLayout = (LinearLayout) findViewById(R.id.player_layout);
         playerStartBtn = (ImageButton) findViewById(R.id.question_play_button);
         playerRestartBtn = (ImageButton) findViewById(R.id.question_restart_button);
+        myWebView = (WebView)findViewById(R.id.ImageWebview);
 
         setCurrentQuestion(questionManager.getRandomQuestion());
 
@@ -60,7 +69,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
             @Override
             public void onClick(View v) {
                 String response = responseInput.getText().toString();
-                getmPlayer().pause();
+                pausePlayer();
                 if (currentQuestion.checkResponse(response)) {
                     application.notify("Réponse correcte !");
                     setCurrentQuestion(questionManager.getRandomQuestion());
@@ -73,10 +82,10 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         playerStartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               
+
                 if(isplaying){
                     isplaying=false;
-                    QuestionActivity.this.getmPlayer().pause();
+                    QuestionActivity.this.pausePlayer();
                     QuestionActivity.this.playerStartBtn.setImageResource(R.mipmap.play);
                 }else{
                     isplaying=true;
@@ -92,7 +101,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
                 QuestionActivity.this.getmPlayer().resume();
             }
         });
-
+        this.compteurQuestion.setText(this.nbQuestion+"/"+nbQuestionParSession);
     }
 
     @Override
@@ -104,6 +113,15 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     }
 
     private void setCurrentQuestion(IQuestion question){
+
+        Logger.debug("NBQUESTION :" + nbQuestion);
+
+        if(nbQuestion == nbQuestionParSession){
+            Intent toEndSession = new Intent(QuestionActivity.this, EndSessionActivity.class);
+            startActivity(toEndSession);
+            return;
+        }
+
         currentQuestion = question;
         questionTextView.setText(currentQuestion.getQuestion());
         messageText.setText("");
@@ -113,11 +131,24 @@ public class QuestionActivity extends AbstractSpotifyActivity {
             playerLayout.setVisibility(LinearLayout.VISIBLE);
             this.playerStartBtn.setImageResource(R.mipmap.pause);
             this.isplaying=true;
+            this.myWebView.setVisibility(LinearLayout.GONE);
             authenticateSpotify();
+
         }
-        else {
+        else if(currentQuestion.getType().equals(QuestionType.IMAGE)){
+            ImageQuestion questionImage = (ImageQuestion)currentQuestion;
             playerLayout.setVisibility(LinearLayout.GONE);
+
+            String html = "<html><body><img src=\"" + questionImage.getUrlImage() + "\" width=\"100%\" height=\"100%\"\"/></body></html>";
+            myWebView.loadData(html, "text/html", null);
+            //myWebView.loadUrl(questionImage.getUrlImage());
+
+        }else{
+            playerLayout.setVisibility(LinearLayout.GONE);
+            this.myWebView.setVisibility(LinearLayout.GONE);
         }
+        this.nbQuestion++;
+        this.compteurQuestion.setText(this.nbQuestion + "/" + nbQuestionParSession);
     }
 
     @Override
@@ -135,7 +166,11 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     }
 
 
-
+    public void pausePlayer(){
+        if( getmPlayer() != null){
+            getmPlayer().pause();
+        }
+    }
 
 
 }

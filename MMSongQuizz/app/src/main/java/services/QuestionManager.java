@@ -1,5 +1,7 @@
 package services;
 
+import android.webkit.WebView;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,8 +12,11 @@ import interfaces.IQuestion;
 import models.Artist;
 import models.Genre;
 import models.BasicQuestion;
+import models.ImageQuestion;
 import models.SoundQuestion;
 import models.Track;
+import utils.AsyncHttpRequest;
+import utils.EchonestUtils;
 import utils.Logger;
 import utils.QuestionType;
 
@@ -68,13 +73,24 @@ public class QuestionManager {
             return question;
         }
         else if(type == QuestionType.IMAGE){ // IMAGE
-            Logger.error("image type not implemented yet");
-            return getQuestion(QuestionType.SOUND);
+
+            Logger.error(artist.getIdSpotify());
+            String imageUrl = artistManager.getImageUrl(artist);
+            ImageQuestion question = new ImageQuestion(artist,imageUrl);
+
+            return question;
         }
 
         return null;
     }
 
+    public ArtistManager getArtistManager() {
+        return artistManager;
+    }
+
+    public void setArtistManager(ArtistManager artistManager) {
+        this.artistManager = artistManager;
+    }
 
 
 }
