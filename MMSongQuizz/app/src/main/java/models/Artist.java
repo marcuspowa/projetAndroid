@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import utils.Logger;
@@ -11,7 +12,8 @@ import utils.Logger;
 /**
  * Created by remy on 08/03/2016.
  */
-public class Artist {
+public class Artist implements Serializable {
+    private static final long serialVersionUID = 95686985;
     private String id;
     private String name;
     private Genre genre;

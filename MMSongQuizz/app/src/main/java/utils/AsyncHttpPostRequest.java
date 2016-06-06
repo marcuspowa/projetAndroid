@@ -2,24 +2,27 @@ package utils;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.util.concurrent.ExecutionException;
 
 /**
  * Created by remy on 12/03/2016.
  */
-public class AsyncHttpRequest extends AsyncTask<String, Void, String> {
+public class AsyncHttpPostRequest extends AsyncTask<String, Void, String> {
     private HttpUtils http;
+    private JSONObject postData;
 
-    public AsyncHttpRequest(HttpUtils http){
+    public AsyncHttpPostRequest(HttpUtils http, JSONObject postData){
         this.http = http;
+        this.postData = postData;
     }
 
 
     @Override
     protected String doInBackground(String... params) {
 
-
-        String res = http.request(params[0]);
+        String res = http.requestPostJson(params[0], postData);
         return res;
     }
 

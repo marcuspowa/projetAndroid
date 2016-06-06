@@ -4,12 +4,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
 /**
  * Created by remy on 07/03/2016.
  */
-public class Track {
+public class Track implements Serializable {
+    private static final long serialVersionUID = 656874978;
     private String id;
     private String title;
     private String spotifyId;

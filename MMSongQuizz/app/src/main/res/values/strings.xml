@@ -2,4 +2,18 @@
     <string name="app_name">MMSongQuizz</string>
     <string name="rules">Un titre de piste musicale va vous être donné, vous devez en retrouver l\'artiste. Seulement, il va falloir remplir un taquin pour donner la réponse.</string>
     <string name="NetworkErrorMessage">Une erreur réseau est survenue</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="prompt_login">Login</string>
 </resources>

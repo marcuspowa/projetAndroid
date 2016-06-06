@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.inject.Inject;
@@ -30,9 +29,6 @@ public class ArtistManager {
         this.httpUtils = httpUtils;
     }
 
-    public Artist get(String title) {
-        return null;
-    }
 
     public Artist getRandombyGenre(Genre genre) {
         ArrayList<Artist> artists = getTopByGenre(genre);
@@ -123,7 +119,7 @@ public class ArtistManager {
 
         } catch (JSONException e) {
             Logger.error("[ArtistManager] json error fff"+e.getMessage(), e);
-            Logger.error("URL utilisÃ© ARTISTE MANAGER : "+url);
+            Logger.error("URL utilisé ARTISTE MANAGER : "+url);
         }
         return artists;
     }
