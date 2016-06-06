@@ -6,6 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.example.remy.mmsongquizz.R;
@@ -22,6 +23,10 @@ public class MainActivity extends BaseActivity {
 
     private Button genrePrefsBtn;
     private Button startBtn;
+    private TextView usernameField;
+    private TextView pointsField;
+    private TextView levelField;
+    private UserManager userManager;
 
 
     @Override
@@ -33,12 +38,12 @@ public class MainActivity extends BaseActivity {
 
         genrePrefsBtn = (Button) findViewById(R.id.main_genre_pref);
         startBtn = (Button) findViewById(R.id.startBtn);
+        usernameField = (TextView) findViewById(R.id.main_usernameField);
+        pointsField = (TextView) findViewById(R.id.main_pointsField);
+        levelField = (TextView) findViewById(R.id.main_levelField);
 
 
-        GenreManager genreManager = application.getContainer().get(GenreManager.class);
-        UserManager userManager = application.getContainer().get(UserManager.class);
-        ArtistManager artistManager = application.getContainer().get(ArtistManager.class);
-        TrackManager trackManager = application.getContainer().get(TrackManager.class);
+        userManager = application.getContainer().get(UserManager.class);
         CacheManager cacheManager = application.getContainer().get(CacheManager.class);
 
 
@@ -64,6 +69,11 @@ public class MainActivity extends BaseActivity {
 
 
     private void initView(){
+        User currentUser = userManager.getCurrentUser();
+        usernameField.setText(currentUser.getName());
+        pointsField.setText(currentUser.getPoints()+" pts");
+        levelField.setText("lvl "+currentUser.getCurrentLevel());
+
         genrePrefsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,5 +1,6 @@
 package com.example.remy.mmsongquizz.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -43,7 +44,8 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         
  		this.nbQuestion =0;
-        isplaying = true;        questionManager = application.getContainer().get(QuestionManager.class);
+        isPlaying = true;
+        questionManager = application.getContainer().get(QuestionManager.class);
 
         questionTextView = (TextView) findViewById(R.id.questionTextView);
         responseInput = (EditText) findViewById(R.id.questionResponseInput);
@@ -97,7 +99,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
                 QuestionActivity.this.getmPlayer().resume();
             }
         });
-        this.compteurQuestion.setText(this.nbQuestion+"/"+nbQuestionParSession);
+        this.compteurQuestion.setText(this.nbQuestion + "/" + nbQuestionParSession);
     }
 
     @Override

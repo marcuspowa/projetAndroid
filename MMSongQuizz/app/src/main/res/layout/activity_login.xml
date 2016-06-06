@@ -30,6 +30,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="198dp"
+                android:layout_height="163dp"
+                android:id="@+id/imageView"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/mmsongquizzlogo" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -71,6 +78,13 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Créer compte"
+                android:id="@+id/login_createuserBtn"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
     </ScrollView>

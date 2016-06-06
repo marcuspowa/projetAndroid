@@ -119,7 +119,7 @@ public class ArtistManager {
 
         } catch (JSONException e) {
             Logger.error("[ArtistManager] json error fff"+e.getMessage(), e);
-            Logger.error("URL utilisé ARTISTE MANAGER : "+url);
+            Logger.error("URL utilise ARTISTE MANAGER : "+url);
         }
         return artists;
     }
