@@ -58,6 +58,34 @@ public class UserManager {
         setCurrentUser(user, true);
     }
 
+    public User addUser(String username, String password){
+        User user = new User();
+        user.setName(username);
+        user.setPassword(password);
+
+        String url = MMSongQuizzApiHost+"user/";
+
+        AsyncHttpPostRequest req = httpUtils.asyncPostRequest(url, user.toJson());
+
+        String requestResult = req.GetResult();
+        try {
+            JSONObject jsonObject = new JSONObject(requestResult);
+            boolean success = jsonObject.getBoolean("success");
+            if(!success){
+                String message = jsonObject.getString("message");
+                Logger.warn("[UserManager] response error (url:" + url+") - " + message);
+                return null;
+            }
+            JSONObject userJson = jsonObject.getJSONObject("data");
+            User updatedUser = User.fromJson(userJson);
+            return updatedUser;
+
+        } catch (JSONException e) {
+            Logger.error("[UserManager] json error", e);
+        }
+        return null;
+    }
+
     public User updateUser(User user){
         HashMap<String, String> params = new HashMap<>();
 

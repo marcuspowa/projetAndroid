@@ -63,6 +63,7 @@ public class GenreActivity extends BaseActivity {
                 ArrayList<Genre> selectedGenres = getSelectedGenres();
                 userManager.getCurrentUser().setPreferedGenres(selectedGenres);
                 userManager.setCurrentUser(userManager.getCurrentUser(), true);
+                userManager.updateUser(userManager.getCurrentUser());
             }
         });
 

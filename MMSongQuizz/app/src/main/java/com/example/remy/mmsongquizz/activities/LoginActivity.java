@@ -35,6 +35,7 @@ public class LoginActivity extends BaseActivity {
     private AutoCompleteTextView loginInput;
     private EditText mPasswordView;
     private Button signInButton;
+    private Button createUserBtn;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -50,6 +51,7 @@ public class LoginActivity extends BaseActivity {
         loginInput = (AutoCompleteTextView) findViewById(R.id.login_login);
         mPasswordView = (EditText) findViewById(R.id.login_password);
         signInButton = (Button) findViewById(R.id.login_sign_in_button);
+        createUserBtn = (Button) findViewById(R.id.login_createuserBtn);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
@@ -77,6 +79,14 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        createUserBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toCreateUser = new Intent(LoginActivity.this, CreateUserActivity.class);
+                startActivity(toCreateUser);
             }
         });
 

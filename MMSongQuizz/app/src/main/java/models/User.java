@@ -20,6 +20,8 @@ public class User implements Serializable {
     private String name;
     private String password;
     private int points;
+    private int currentLevel;
+    private int currentQuestion;
     private ArrayList<Genre> preferedGenres;
 
     public User(){
@@ -59,12 +61,34 @@ public class User implements Serializable {
         this.preferedGenres = preferedGenres;
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public void setCurrentQuestion(int currentQuestion) {
+        this.currentQuestion = currentQuestion;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public int getCurrentQuestion() {
+        return currentQuestion;
+    }
+
     public JSONObject toJson(){
         JSONObject json = new JSONObject();
         try {
             json.put("id", this.id);
             json.put("name", this.name);
             json.put("password", this.password);
+            json.put("currentLevel", this.currentLevel);
+            json.put("currentQuestionNumber", this.currentQuestion);
             json.put("points", this.points);
             ArrayList<String> genreNames = new ArrayList<>();
             for(Genre genre : preferedGenres){
@@ -84,6 +108,8 @@ public class User implements Serializable {
             user.setName(jsonUser.getString("name"));
             user.password = jsonUser.getString("password");
             user.points = jsonUser.getInt("points");
+            user.currentLevel = jsonUser.getInt("currentLevel");
+            user.currentQuestion = jsonUser.getInt("currentQuestionNumber");
             String genres = jsonUser.getString("preferedGenres");
             for(String genre : genres.split(",")) {
                 user.getPreferedGenres().add(new Genre(genre));
