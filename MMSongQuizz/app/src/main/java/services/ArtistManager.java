@@ -1,5 +1,7 @@
 package services;
 
+import android.net.Uri;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +19,7 @@ import utils.AsyncHttpRequest;
 import utils.EchonestUtils;
 import utils.HttpUtils;
 import utils.Logger;
+import utils.SpotifyUtils;
 
 /**
  * Created by remy on 22/03/2016.
@@ -42,36 +45,31 @@ public class ArtistManager {
         return artist;
     }
 
-    public ArrayList<Artist> getByGenre(Genre genre){
-        Logger.error("BIIIIITE");
+    public ArrayList<Artist> getTopByGenre(Genre genre){
         if(null == genre){
             throw new IllegalArgumentException("genre is null");
         }
         ArrayList<Artist> artists = new ArrayList<>();
         HashMap<String, String> params = new HashMap<>();
-        params.put("api_key",EchonestUtils.API_KEY);
-        params.put("genre",genre.getName());
-        params.put("bucket","songs");
-        params.put("results","100");
+        params.put("type","artist");
+//        params.put("q","genre:"+genre.getName());
+        params.put("popularity","100");
+        params.put("limit","50");
 
 
-        String url = EchonestUtils.BASE_URL+"artist/search?"+HttpUtils.concatParams(params)+"&bucket=id:spotify";
+        String url = SpotifyUtils.BASE_URL+"search/?"+HttpUtils.concatParams(params)+"&q=genre:"+ Uri.encode(genre.getName(), "UTF-8");
 
-        AsyncHttpRequest req = httpUtils.asyncRequest(url);
-
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization","Bearer "+SpotifyUtils.currentToken);
+        AsyncHttpRequest req = httpUtils.asyncRequest(url, headers);
         String requestResult = req.GetResult();
-        boolean success = EchonestUtils.getSuccessFromReponse(requestResult);
-        if(!success){
-            Logger.warn("[ArtistManager] response error (url:" + url+")");
-            return artists;
-        }
         try {
             JSONObject jsonObject = new JSONObject(requestResult);
-            JSONObject jsonResponse = jsonObject.getJSONObject("response");
-            JSONArray jsonArtists = jsonResponse.getJSONArray("artists");
+            JSONObject jsonArtists = jsonObject.getJSONObject("artists");
+            JSONArray jsonItems = jsonArtists.getJSONArray("items");
 
-            for (int i = 0; i < jsonArtists.length(); i++) {
-                JSONObject jsonArtist = jsonArtists.getJSONObject(i);
+            for (int i = 0; i < jsonItems.length(); i++) {
+                JSONObject jsonArtist = jsonItems.getJSONObject(i);
                 Artist artist = Artist.createFromJson(jsonArtist);
                 artist.setGenre(genre);
                 artists.add(artist);
@@ -83,66 +81,6 @@ public class ArtistManager {
         return artists;
     }
 
-    public ArrayList<Artist> getTopByGenre(Genre genre){
-        if(null == genre){
-            throw new IllegalArgumentException("genre is null");
-        }
-        ArrayList<Artist> artists = new ArrayList<>();
-        HashMap<String, String> params = new HashMap<>();
-        params.put("api_key",EchonestUtils.API_KEY);
-        params.put("genre",genre.getName());
-        params.put("results","100");
 
-
-        String url = EchonestUtils.BASE_URL+"artist/top_hottt?"+HttpUtils.concatParams(params)+"&bucket=id:spotify";
-
-        AsyncHttpRequest req = httpUtils.asyncRequest(url);
-
-        String requestResult = req.GetResult();
-        Logger.debug(requestResult);
-        boolean success = EchonestUtils.getSuccessFromReponse(requestResult);
-        if(!success){
-            Logger.warn("[ArtistManager] response error (url:" + url+")");
-            return artists;
-        }
-        try {
-                    JSONObject jsonObject = new JSONObject(requestResult);
-                    JSONObject jsonResponse = jsonObject.getJSONObject("response");
-                    JSONArray jsonArtists = jsonResponse.getJSONArray("artists");
-
-                    for (int i = 0; i < jsonArtists.length(); i++) {
-                        JSONObject jsonArtist = jsonArtists.getJSONObject(i);
-                        Artist artist = Artist.createFromJson(jsonArtist);
-                        artist.setGenre(genre);
-                        artists.add(artist);
-            }
-
-        } catch (JSONException e) {
-            Logger.error("[ArtistManager] json error fff"+e.getMessage(), e);
-            Logger.error("URL utilise ARTISTE MANAGER : "+url);
-        }
-        return artists;
-    }
-
-    public String getImageUrl(Artist artist){
-        String spotifyId = artist.getIdSpotify();
-        String url = "https://api.spotify.com/v1/artists/"+spotifyId;
-        AsyncHttpRequest req = httpUtils.asyncRequest(url);
-        String requestResult = req.GetResult();
-
-        try {
-            JSONObject jsonObject = new JSONObject(requestResult);
-            JSONArray imageArray = jsonObject.getJSONArray("images");
-            JSONObject imageObject = imageArray.getJSONObject(0);
-            String imageUrl = imageObject.getString("url");
-            Logger.error("URLImage : "+imageUrl);
-            return imageUrl;
-
-        } catch (JSONException e) {
-            Logger.error("[ArtistManager] [IMAGE URL] json error "+e.getMessage(), e);
-        }
-
-        return null;
-    }
 
 }

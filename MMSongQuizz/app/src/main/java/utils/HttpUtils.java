@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -35,29 +36,42 @@ public class HttpUtils {
     }
 
 
+    public AsyncHttpRequest asyncRequest(String urlStr, Map<String, String> headers){
+        AsyncHttpRequest asyncHttpRequest = new AsyncHttpRequest(this, headers);
+
+        asyncHttpRequest.execute(urlStr);
+
+        return asyncHttpRequest;
+    }
     public AsyncHttpRequest asyncRequest(String urlStr){
-        AsyncHttpRequest asyncHttpRequest = new AsyncHttpRequest(this);
+        return asyncRequest(urlStr, new HashMap<String, String>());
+    }
+
+    public AsyncHttpPostRequest asyncPostRequest(String urlStr, String postData, Map<String, String> headers){
+        AsyncHttpPostRequest asyncHttpRequest = new AsyncHttpPostRequest(this, postData, headers);
 
         asyncHttpRequest.execute(urlStr);
 
         return asyncHttpRequest;
     }
 
-    public AsyncHttpPostRequest asyncPostRequest(String urlStr, JSONObject postData){
-        AsyncHttpPostRequest asyncHttpRequest = new AsyncHttpPostRequest(this, postData);
-
-        asyncHttpRequest.execute(urlStr);
-
-        return asyncHttpRequest;
+    public AsyncHttpPostRequest asyncPostRequest(String urlStr, String postData){
+        return asyncPostRequest(urlStr, postData, new HashMap<String, String>());
     }
 
-    public String request(String urlStr) {
+    public String request(String urlStr, Map<String, String> headers) {
         Logger.debug("[HttpUtils] sending http request to: " + urlStr);
         try {
             URL url = new URL(urlStr);
 
             HttpURLConnection urlConnection = null;
             urlConnection = (HttpURLConnection) url.openConnection();
+            //set headers
+            for(Map.Entry<String,String> entry : headers.entrySet()){
+                Logger.debug("HEADER "
+                        + entry.getKey()+ ": "+ entry.getValue());
+                urlConnection.setRequestProperty (entry.getKey(), entry.getValue());
+            }
 
             InputStream in = null;
             in = new BufferedInputStream(urlConnection.getInputStream());
@@ -76,22 +90,26 @@ public class HttpUtils {
         return null;
     }
 
-    public String requestPostJson(String urlStr, JSONObject postData) {
+    public String requestPostJson(String urlStr, String postData, Map<String, String> headers) {
         Logger.debug("[HttpUtils] sending POST http request to: " + urlStr + " with data: " + postData.toString());
         try {
             URL url = new URL(urlStr);
 
             HttpURLConnection urlConnection = null;
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Accept", "application/json");
+            //set headers
+            for(Map.Entry<String,String> entry : headers.entrySet()){
+                Logger.debug("HEADER "
+                        + entry.getKey()+ ": "+ entry.getValue());
+                urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
+            }
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
             OutputStream os = urlConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(postData.toString());
+            writer.write(postData);
             writer.flush();
             writer.close();
             os.close();
@@ -104,10 +122,10 @@ public class HttpUtils {
             urlConnection.disconnect();
             return txtResponse;
         } catch (MalformedURLException e) {
-            Logger.error("MalformedURLException in HttpUtils.request",e);
-            e.printStackTrace();
+            Logger.error("MalformedURLException in HttpUtils.request: " + e.getMessage(),e);
+                    e.printStackTrace();
         } catch (IOException e) {
-            Logger.error("IOException in HttpUtils.request",e);
+            Logger.error("IOException in HttpUtils.request: " + e.getMessage(),e);
             e.printStackTrace();
         }
         return null;

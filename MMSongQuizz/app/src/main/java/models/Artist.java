@@ -18,12 +18,12 @@ public class Artist implements Serializable {
     private String name;
     private Genre genre;
     private ArrayList<Track> tracks;
-    private String idSpotify;
+    private String imageUrl;
 
-    public Artist(String id, String name, String idSpotify){
+    public Artist(String id, String name, String imageUrl){
         this.id = id;
         this.name = name;
-        this.idSpotify = idSpotify;
+        this.imageUrl = imageUrl;
         tracks = new ArrayList<Track>();
     }
 
@@ -39,8 +39,8 @@ public class Artist implements Serializable {
         return name;
     }
 
-    public String getIdSpotify() {
-        return idSpotify;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public Genre getGenre() {
@@ -59,20 +59,10 @@ public class Artist implements Serializable {
     public static Artist createFromJson(JSONObject jsonObject) throws JSONException {
         Artist artist = null;
 
-        if(!jsonObject.has("foreign_ids")){
-            Logger.error("[ARTIST]: ERREUR pas de foreign_ids");
-        }else{
-            JSONArray arraySpotifyId = jsonObject.getJSONArray("foreign_ids");
-            String spotifyid = null;
-            if(arraySpotifyId.length() >0){
-                JSONObject objectSpotifyId = arraySpotifyId.getJSONObject(0);
-                spotifyid = objectSpotifyId.getString("foreign_id");
-                spotifyid = spotifyid.split(":")[2];
-            }
-
-            artist = new Artist(jsonObject.getString("id"), jsonObject.getString("name"),spotifyid);
-        }
-
+        JSONArray imageArray = jsonObject.getJSONArray("images");
+        JSONObject imageObject = imageArray.getJSONObject(0);
+        String imageUrl = imageObject.getString("url");
+        artist = new Artist(jsonObject.getString("id"), jsonObject.getString("name"), imageUrl);
 
         return artist;
     }

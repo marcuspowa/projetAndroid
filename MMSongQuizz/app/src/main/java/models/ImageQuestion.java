@@ -8,11 +8,9 @@ import utils.QuestionType;
  */
 public class ImageQuestion implements IQuestion {
     private Artist artist;
-    private String urlImage;
 
-    public ImageQuestion(Artist artist,String urlImage) {
+    public ImageQuestion(Artist artist) {
         this.artist = artist;
-        this.urlImage = urlImage;
     }
 
     @Override
@@ -39,10 +37,7 @@ public class ImageQuestion implements IQuestion {
 
 
     public String getUrlImage() {
-        return urlImage;
+        return artist.getImageUrl();
     }
 
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
 }

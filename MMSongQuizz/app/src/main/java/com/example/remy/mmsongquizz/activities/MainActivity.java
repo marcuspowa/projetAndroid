@@ -18,6 +18,8 @@ import services.CacheManager;
 import services.GenreManager;
 import services.TrackManager;
 import services.UserManager;
+import utils.Logger;
+import utils.SpotifyUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -45,8 +47,9 @@ public class MainActivity extends BaseActivity {
 
         userManager = application.getContainer().get(UserManager.class);
         CacheManager cacheManager = application.getContainer().get(CacheManager.class);
+        SpotifyUtils spotifyUtils = application.getContainer().get(SpotifyUtils.class);
 
-
+        spotifyUtils.fetchToken();
 
         if(userManager.getCurrentUser() == null) {
             if (!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.UserCacheKey)) {
@@ -58,6 +61,7 @@ public class MainActivity extends BaseActivity {
                 userManager.setCurrentUser(userManager.getCurrentUser(true));
             }
         }
+        Logger.debug("Current User initialisé");
 
 //        userManager.updateUser(userManager.getCurrentUser());
 

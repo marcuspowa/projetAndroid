@@ -15,7 +15,8 @@ import services.*;
             ArtistManager.class,
             UserManager.class,
             CacheManager.class,
-            AsyncDataFetcher.class
+            AsyncDataFetcher.class,
+            SpotifyUtils.class
     }
 )
 public class MMQuizzModule {

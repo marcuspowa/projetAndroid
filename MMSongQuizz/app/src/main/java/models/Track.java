@@ -15,17 +15,22 @@ public class Track implements Serializable {
     private static final long serialVersionUID = 656874978;
     private String id;
     private String title;
-    private String spotifyId;
+    private String uri;
     private Artist artist;
 
 
-    public Track(String id, String title) {
+    public Track(String id, String title, String uri) {
         this.id = id;
         this.title = title;
+        this.uri = uri;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getUri() {
+        return uri;
     }
 
     public String getTitle() {
@@ -40,22 +45,9 @@ public class Track implements Serializable {
         this.artist = artist;
     }
 
-    public void setSpotifyId(String spotifyId) {
-        this.spotifyId = spotifyId;
-    }
-
-    public String getSpotifyId() {
-        return spotifyId;
-    }
-
     public static Track createFromJson(JSONObject jsonObject) throws JSONException {
-        Track track = new Track(jsonObject.getString("id"), formatTitle(jsonObject.getString("title")));
-        JSONArray jsonTracks = jsonObject.getJSONArray("tracks");
+        Track track = new Track(jsonObject.getString("id"), formatTitle(jsonObject.getString("name")), jsonObject.getString("uri"));
 
-        if(jsonTracks.length() > 0){
-            String spotId = jsonTracks.getJSONObject(0).getString("foreign_id");
-            track.setSpotifyId(spotId);
-        }
         return track;
     }
 

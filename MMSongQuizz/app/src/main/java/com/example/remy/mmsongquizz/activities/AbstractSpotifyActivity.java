@@ -16,14 +16,11 @@ import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 
 import utils.Logger;
+import utils.SpotifyUtils;
 
 public abstract class AbstractSpotifyActivity extends BaseActivity implements
         PlayerNotificationCallback, ConnectionStateCallback {
 
-    // TODO: Replace with your client ID
-    private static final String CLIENT_ID = "96efaa3336f641688ed968c9a0498c34";
-    // TODO: Replace with your redirect URI
-    private static final String REDIRECT_URI = "com.example.remy.mmsongquizz://callback";
 
     // Request code that will be passed together with authentication result to the onAuthenticationResult callback
     // Can be set to any integer
@@ -40,7 +37,7 @@ public abstract class AbstractSpotifyActivity extends BaseActivity implements
 
     public void authenticateSpotify(){
         if(accessToken == null){
-            AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+            AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(SpotifyUtils.CLIENT_ID, AuthenticationResponse.Type.TOKEN, SpotifyUtils.REDIRECT_URI);
             builder.setScopes(new String[]{"user-read-private", "streaming"});
             AuthenticationRequest request = builder.build();
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
@@ -76,7 +73,7 @@ public abstract class AbstractSpotifyActivity extends BaseActivity implements
     }
 
     public void startPlayer(final String songId){
-        Config playerConfig = new Config(this,this.accessToken, CLIENT_ID);
+        Config playerConfig = new Config(this,this.accessToken, SpotifyUtils.CLIENT_ID);
         mPlayer = Spotify.getPlayer(playerConfig, this, new Player.InitializationObserver() {
             @Override
             public void onInitialized(Player player) {

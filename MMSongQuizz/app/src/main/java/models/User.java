@@ -41,6 +41,10 @@ public class User implements Serializable {
         return name;
     }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

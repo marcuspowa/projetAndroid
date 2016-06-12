@@ -20,15 +20,11 @@ import utils.Logger;
  * Created by remy on 22/03/2016.
  */
 public class GenreManager {
-    private static ArrayList<Genre> genreList = new ArrayList<>();
-    private static boolean cached = false;
 
-    private HttpUtils httpUtils;
     private UserManager userManager;
 
     @Inject
-    public GenreManager(HttpUtils httpUtils, UserManager userManager){
-        this.httpUtils = httpUtils;
+    public GenreManager(UserManager userManager){
         this.userManager = userManager;
     }
 
@@ -58,42 +54,12 @@ public class GenreManager {
     }
 
     public ArrayList<Genre> getAll(){
-        if(cached){
-            return genreList;
-        }
-
         ArrayList<Genre> genres = new ArrayList<>();
-        HashMap<String, String> params = new HashMap<>();
-        params.put("api_key", EchonestUtils.API_KEY);
+        genres.add(new Genre("rock"));
+        genres.add(new Genre("jazz"));
+        genres.add(new Genre("blues"));
 
-        String url = EchonestUtils.BASE_URL+"genre/list?"+HttpUtils.concatParams(params);
 
-        AsyncHttpRequest req = httpUtils.asyncRequest(url);
-
-        String requestResult = req.GetResult();
-        boolean success = EchonestUtils.getSuccessFromReponse(requestResult);
-        if(!success){
-            Logger.warn("[GenreManager] response error (url:" + url+")");
-            return genres;
-        }
-
-        try {
-            JSONObject jsonObject = new JSONObject(requestResult);
-            JSONObject jsonResponse = jsonObject.getJSONObject("response");
-
-            JSONArray jsonGenres = jsonResponse.getJSONArray("genres");
-            for (int i = 0; i < jsonGenres.length(); i++) {
-                JSONObject jsonGenre = jsonGenres.getJSONObject(i);
-                Genre genre = Genre.createFromJson(jsonGenre);
-                if(genre.getName().contains("rock")){
-                    genres.add(genre);
-                }
-            }
-        } catch (JSONException e) {
-            Logger.error("[GenreManager] json error",e);
-        }
-        genreList.addAll(genres);
-        cached = true;
         return genres;
     }
 }

@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -11,22 +13,26 @@ import java.util.concurrent.ExecutionException;
  */
 public class AsyncHttpPostRequest extends AsyncTask<String, Void, String> {
     private HttpUtils http;
-    private JSONObject postData;
+    private String postData;
+    private Map<String, String> headers;
 
-    public AsyncHttpPostRequest(HttpUtils http, JSONObject postData){
+    public AsyncHttpPostRequest(HttpUtils http, String postData, Map<String, String> headers){
         this.http = http;
         this.postData = postData;
+        this.headers = headers;
     }
-
+    public AsyncHttpPostRequest(HttpUtils http, String postData){
+        this(http,postData, new HashMap<String, String>());
+    }
 
     @Override
     protected String doInBackground(String... params) {
 
-        String res = http.requestPostJson(params[0], postData);
+        String res = http.requestPostJson(params[0], postData, headers);
         return res;
     }
 
-    public String GetResult(){
+    public String getResult(){
         String result = null;
         try {
             result = this.get();

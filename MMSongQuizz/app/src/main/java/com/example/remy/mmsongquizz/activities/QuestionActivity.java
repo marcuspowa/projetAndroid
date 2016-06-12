@@ -118,7 +118,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     public void onTokenReceived() {
         if(currentQuestion.getType().equals(QuestionType.SOUND)){
             SoundQuestion soundQuestion = (SoundQuestion) currentQuestion;
-            this.startPlayer(soundQuestion.getTrack().getSpotifyId());
+            this.startPlayer(soundQuestion.getTrack().getUri());
         }
     }
 
@@ -191,7 +191,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
             case TRACK_UNAVAILABLE :
                 setCurrentQuestion(questionManager.getQuestion(QuestionType.SOUND));
                 SoundQuestion soundQuestion = (SoundQuestion) currentQuestion;
-                this.startPlayer(soundQuestion.getTrack().getSpotifyId());
+                this.startPlayer(soundQuestion.getTrack().getUri());
                 break;
             default:
                 break;

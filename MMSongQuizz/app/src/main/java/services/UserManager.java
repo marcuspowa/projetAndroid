@@ -11,14 +11,12 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import models.Artist;
-import models.Track;
 import models.User;
 import utils.AsyncHttpPostRequest;
 import utils.AsyncHttpRequest;
-import utils.EchonestUtils;
 import utils.HttpUtils;
 import utils.Logger;
+import utils.SpotifyUtils;
 
 /**
  * Created by remy on 19/05/2016.
@@ -28,6 +26,7 @@ public class UserManager {
     private static String MMSongQuizzApiHost = "http://192.168.1.19/api/";
     private static User currentUser;
     public static final String UserCacheKey = "MMSongQuizzCurrentUser";
+    public static boolean standAloneMode = false;
 
     private CacheManager cacheManager;
     private HttpUtils httpUtils;
@@ -64,10 +63,11 @@ public class UserManager {
         user.setPassword(password);
 
         String url = MMSongQuizzApiHost+"user/";
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("content-type", "application/json");
+        AsyncHttpPostRequest req = httpUtils.asyncPostRequest(url, user.toJson().toString(), headers);
 
-        AsyncHttpPostRequest req = httpUtils.asyncPostRequest(url, user.toJson());
-
-        String requestResult = req.GetResult();
+        String requestResult = req.getResult();
         try {
             JSONObject jsonObject = new JSONObject(requestResult);
             boolean success = jsonObject.getBoolean("success");
@@ -87,13 +87,18 @@ public class UserManager {
     }
 
     public User updateUser(User user){
+        if(standAloneMode){
+            return user;
+        }
         HashMap<String, String> params = new HashMap<>();
 
         String url = MMSongQuizzApiHost+"user/"+user.getId();
 
-        AsyncHttpPostRequest req = httpUtils.asyncPostRequest(url, user.toJson());
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("content-type", "application/json");
+        AsyncHttpPostRequest req = httpUtils.asyncPostRequest(url, user.toJson().toString(), headers);
 
-        String requestResult = req.GetResult();
+        String requestResult = req.getResult();
         try {
             JSONObject jsonObject = new JSONObject(requestResult);
             boolean success = jsonObject.getBoolean("success");
@@ -113,6 +118,20 @@ public class UserManager {
     }
 
     public User checkCredentials(String login, String password){
+        if(standAloneMode){
+            if("test".equals(login) && "test".equals(password)){
+                Logger.info("STAND ALONE MODE");
+                User userTest = new User();
+                userTest.setId(1);
+                userTest.setName("test");
+                userTest.setPoints(50);
+                userTest.setCurrentLevel(0);
+                userTest.setCurrentQuestion(0);
+                this.setCurrentUser(userTest);
+                return userTest;
+            }
+            return null;
+        }
         HashMap<String, String> params = new HashMap<>();
         params.put("name", login);
         params.put("password", password);

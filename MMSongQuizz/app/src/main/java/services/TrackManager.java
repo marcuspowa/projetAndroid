@@ -1,9 +1,13 @@
 package services;
 
+import android.net.Uri;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -16,6 +20,7 @@ import utils.AsyncHttpRequest;
 import utils.EchonestUtils;
 import utils.HttpUtils;
 import utils.Logger;
+import utils.SpotifyUtils;
 
 /**
  * Created by remy on 02/03/2016.
@@ -52,40 +57,31 @@ public class TrackManager {
         }
         ArrayList<Track> tracks = new ArrayList<>();
         HashMap<String, String> params = new HashMap<>();
-        params.put("api_key", EchonestUtils.API_KEY);
-        params.put("artist_id", artist.getId());
-        params.put("bucket", "id:spotify");
-        params.put("sort", "song_hotttnesss-desc");
-        params.put("song_type", "studio");
-        params.put("results","100");
+        params.put("country","FR");
 
+        String url = null;
+        url = SpotifyUtils.BASE_URL+"artists/" + artist.getId() +"/top-tracks/?" + HttpUtils.concatParams(params);
 
-        String url = EchonestUtils.BASE_URL+"song/search?"+ HttpUtils.concatParams(params)+"&bucket=tracks";
-
-        AsyncHttpRequest req = httpUtils.asyncRequest(url);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization","Bearer "+SpotifyUtils.currentToken);
+        AsyncHttpRequest req = httpUtils.asyncRequest(url, headers);
 
         String requestResult = req.GetResult();
-        boolean success = EchonestUtils.getSuccessFromReponse(requestResult);
-        if(!success){
-            Logger.warn("[TrackManager] response error (url:" + url + ")");
-            return tracks;
-        }
         try {
             JSONObject jsonObject = new JSONObject(requestResult);
-            JSONObject jsonResponse = jsonObject.getJSONObject("response");
-            JSONArray jsonSongs = jsonResponse.getJSONArray("songs");
+            JSONArray jsonTracks = jsonObject.getJSONArray("tracks");
 
-            for (int i = 0; i < jsonSongs.length(); i++) {
-                JSONObject jsonTrack = jsonSongs.getJSONObject(i);
+            for (int i = 0; i < jsonTracks.length(); i++) {
+                JSONObject jsonTrack = jsonTracks.getJSONObject(i);
                 Track track = Track.createFromJson(jsonTrack);
                 track.setArtist(artist);
                 tracks.add(track);
             }
 
         } catch (JSONException e) {
-            Logger.error("[GenreManager] json error", e);
+            Logger.error("[TrackManager] json error", e);
         }
-        return removeDuplicatedObjects(tracks);
+        return tracks;
     }
 
     public ArrayList<Track> removeDuplicatedObjects(ArrayList<Track> tracks){

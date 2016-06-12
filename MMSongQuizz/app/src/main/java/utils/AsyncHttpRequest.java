@@ -2,6 +2,8 @@ package utils;
 
 import android.os.AsyncTask;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -9,9 +11,14 @@ import java.util.concurrent.ExecutionException;
  */
 public class AsyncHttpRequest extends AsyncTask<String, Void, String> {
     private HttpUtils http;
+    private Map<String, String> headers;
 
-    public AsyncHttpRequest(HttpUtils http){
+    public AsyncHttpRequest(HttpUtils http, Map<String, String> headers){
         this.http = http;
+        this.headers = headers;
+    }
+    public AsyncHttpRequest(HttpUtils http){
+        this(http, new HashMap<String, String>());
     }
 
 
@@ -19,7 +26,7 @@ public class AsyncHttpRequest extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
 
 
-        String res = http.request(params[0]);
+        String res = http.request(params[0], headers);
         return res;
     }
 

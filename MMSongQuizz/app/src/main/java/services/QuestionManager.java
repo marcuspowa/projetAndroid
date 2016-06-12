@@ -65,7 +65,7 @@ public class QuestionManager {
         }
         else if(type == QuestionType.SOUND){ // MUSIC
             Track track = trackManager.getRandom(artist);
-            while (track.getSpotifyId() == null){
+            while (track.getUri() == null){
                 track = trackManager.getRandom(artist);
             }
             SoundQuestion question = new SoundQuestion(artist, track);
@@ -73,9 +73,7 @@ public class QuestionManager {
         }
         else if(type == QuestionType.IMAGE){ // IMAGE
 
-            Logger.error(artist.getIdSpotify());
-            String imageUrl = artistManager.getImageUrl(artist);
-            ImageQuestion question = new ImageQuestion(artist,imageUrl);
+            ImageQuestion question = new ImageQuestion(artist);
 
             return question;
         }
