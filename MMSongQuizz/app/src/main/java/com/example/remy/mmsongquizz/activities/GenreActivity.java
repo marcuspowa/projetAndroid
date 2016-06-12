@@ -31,6 +31,8 @@ public class GenreActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genre);
 
+        checkNetwork();
+
         genreManager = application.getContainer().get(GenreManager.class);
         userManager = application.getContainer().get(UserManager.class);
 
@@ -64,6 +66,7 @@ public class GenreActivity extends BaseActivity {
                 userManager.getCurrentUser().setPreferedGenres(selectedGenres);
                 userManager.setCurrentUser(userManager.getCurrentUser(), true);
                 userManager.updateUser(userManager.getCurrentUser());
+                application.notify("Genres mis à jour");
             }
         });
 

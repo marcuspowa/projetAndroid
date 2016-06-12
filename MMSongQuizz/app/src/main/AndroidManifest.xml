@@ -33,7 +33,8 @@
         <activity android:name=".activities.GenreActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.EndSessionActivity" />
-        <activity android:name=".activities.CreateUserActivity"></activity>
+        <activity android:name=".activities.CreateUserActivity" />
+        <activity android:name=".activities.LeaderboardActivity"></activity>
     </application>
 
 </manifest>

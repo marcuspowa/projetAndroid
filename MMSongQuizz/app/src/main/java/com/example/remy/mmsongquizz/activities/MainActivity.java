@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.remy.mmsongquizz.R;
 
 
+import models.Genre;
 import models.User;
 import services.ArtistManager;
 import services.CacheManager;
@@ -25,6 +26,7 @@ public class MainActivity extends BaseActivity {
 
     private Button genrePrefsBtn;
     private Button startBtn;
+    private Button leaderboardBtn;
     private TextView usernameField;
     private TextView pointsField;
     private TextView levelField;
@@ -40,6 +42,7 @@ public class MainActivity extends BaseActivity {
 
         genrePrefsBtn = (Button) findViewById(R.id.main_genre_pref);
         startBtn = (Button) findViewById(R.id.startBtn);
+        leaderboardBtn = (Button) findViewById(R.id.main_leaderboardsBtn);
         usernameField = (TextView) findViewById(R.id.main_usernameField);
         pointsField = (TextView) findViewById(R.id.main_pointsField);
         levelField = (TextView) findViewById(R.id.main_levelField);
@@ -63,9 +66,12 @@ public class MainActivity extends BaseActivity {
         }
         Logger.debug("Current User initialisé");
 
-//        userManager.updateUser(userManager.getCurrentUser());
-
-//        userManager.getAll();
+        //if no prefered genres : redirect to genre selection
+        if(userManager.getCurrentUser().getPreferedGenres().size() == 0){
+            application.notify("Veuillez sélectionner vos genres préférés");
+            Intent toGenrePrefs = new Intent(MainActivity.this, GenreActivity.class);
+            startActivity(toGenrePrefs);
+        }
 
         initView();
     }
@@ -90,6 +96,13 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent toQuestion = new Intent(MainActivity.this, QuestionActivity.class);
                 startActivity(toQuestion);
+            }
+        });
+        leaderboardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toLeaderboard = new Intent(MainActivity.this, LeaderboardActivity.class);
+                startActivity(toLeaderboard);
             }
         });
     }

@@ -191,4 +191,34 @@ public class UserManager {
     }
 
 
+    public ArrayList<User> getleaderBoard(){
+        ArrayList<User> users = new ArrayList<>();
+
+
+        String url = MMSongQuizzApiHost+"user/LeaderBoard";
+
+        AsyncHttpRequest req = httpUtils.asyncRequest(url);
+
+        String requestResult = req.GetResult();
+        try {
+            JSONObject jsonObject = new JSONObject(requestResult);
+            boolean success = jsonObject.getBoolean("success");
+            if(!success){
+                String message = jsonObject.getString("message");
+                Logger.warn("[UserManager] response error (url:" + url+") - " + message);
+                return users;
+            }
+            JSONArray jsonUsers = jsonObject.getJSONArray("data");
+
+            for (int i = 0; i < jsonUsers.length(); i++) {
+                JSONObject jsonUser = jsonUsers.getJSONObject(i);
+                User user = User.fromJson(jsonUser);
+                users.add(user);
+            }
+        } catch (JSONException e) {
+            Logger.error("[UserManager] json error", e);
+        }
+        return users;
+    }
+
 }

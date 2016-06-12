@@ -13,7 +13,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/genre_home_btn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -47,6 +46,19 @@
                 android:layout_gravity="right" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Genres préférés"
+            android:id="@+id/genres_title"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginBottom="10dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
