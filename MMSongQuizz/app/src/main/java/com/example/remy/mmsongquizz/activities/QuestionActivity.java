@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.UI.QuestionModel;
+import com.UI.ResponseButtonClickListener;
 import com.example.remy.mmsongquizz.R;
 
 import java.util.ArrayList;
@@ -39,13 +41,11 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     public static final int  nbQuestionParSession =10;
     private WebView myWebView;
     private ArrayList<Button> buttonList;
-    private String hideresponse;
-    private char newReponseArray[] = new char[12];
-    private int questionPoints;
     private int sessionPoints;
 
-
     private String currentResponse;
+
+    private QuestionModel questionModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,9 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         sessionPoints=0;
  		this.nbQuestion =0;
-        isPlaying = true;        questionManager = application.getContainer().get(QuestionManager.class);
+        isPlaying = true;
+
+        questionManager = application.getContainer().get(QuestionManager.class);
 
         questionTextView = (TextView) findViewById(R.id.questionTextView);
         responseInput = (TextView) findViewById(R.id.questionResponseInput);
@@ -86,15 +88,9 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         buttonList.add((Button)findViewById(R.id.button11));
         buttonList.add((Button) findViewById(R.id.button12));
 
-        for(Button button : buttonList){
-            button.setEnabled(true);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Button button = (Button) v;
-                    putLetter(button);
-                }
-            });
+        for(int i=0; i<buttonList.size(); i++){
+            buttonList.get(i).setEnabled(true);
+            buttonList.get(i).setOnClickListener(new ResponseButtonClickListener(this, i));
         }
 
         setCurrentQuestion(questionManager.getRandomQuestion());
@@ -102,13 +98,21 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         initView();
     }
 
+    public QuestionModel getQuestionModel() {
+        return questionModel;
+    }
+
+    public ArrayList<Button> getButtonList() {
+        return buttonList;
+    }
+
     public void submit(){
         String response = currentQuestion.getResponse();
         pausePlayer();
-        if (currentQuestion.checkResponse(hideresponse)) {
+        if (currentQuestion.checkResponse(questionModel.getResponseText())) {
             application.notify("Réponse correcte !");
             //cumul points
-            sessionPoints+=questionPoints;
+            sessionPoints+=questionModel.getQuestionPoints();
             setCurrentQuestion(questionManager.getRandomQuestion());
         } else {
             application.notify("Réponse incorrecte !");
@@ -116,12 +120,26 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         }
     }
 
+    public void update(){
+        responseInput.setText(questionModel.getResponseText());
+        if(getQuestionModel().isFullyFilled()){
+            submit();
+        }
+    }
+
     private void initView(){
+        indiceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addHintLetter();
+            }
+        });
 
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearResponse();
+                questionModel.clearLast();
+                responseInput.setText(questionModel.getResponseText());
             }
         });
 
@@ -147,7 +165,12 @@ public class QuestionActivity extends AbstractSpotifyActivity {
                 QuestionActivity.this.getmPlayer().resume();
             }
         });
-        this.compteurQuestion.setText(this.nbQuestion+"/"+nbQuestionParSession);
+        this.compteurQuestion.setText(this.nbQuestion + "/" + nbQuestionParSession);
+    }
+
+    public void addHintLetter(){
+        questionModel.putIndice();
+        update();
     }
 
     @Override
@@ -158,45 +181,10 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         }
     }
 
-    private void clearResponse(){
-        int currentPosition = currentResponse.length()-1;
-
-        if(currentPosition<0 ){
-            return;
-        }
-
-        char currentChar = hideresponse.charAt(currentPosition);
-        StringBuilder sb = new StringBuilder(hideresponse);
-
-        if( currentChar == ' '){
-            currentPosition --;
-
-        }
-        for(Button b : buttonList){
-            Logger.error(b.getText()+" "+String.valueOf(currentChar));
-
-            if(b.getText().toString().toUpperCase().equals(String.valueOf(currentChar)) && !b.isEnabled()){
-
-                b.setEnabled(true);
-                break;
-            }
-        }
-
-
-        sb.setCharAt(currentPosition, '_');
-        currentResponse = currentResponse.substring(0,currentPosition);
-        hideresponse = sb.toString();
-        responseInput.setText(hideresponse);
-
-
-    }
 
 
 
     private void setCurrentQuestion(IQuestion question){
-
-        hideresponse="";
-        currentResponse="";
 
         Logger.debug("NBQUESTION :" + nbQuestion);
 
@@ -209,45 +197,16 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         currentQuestion = question;
         questionTextView.setText(currentQuestion.getQuestion());
+        questionModel = new QuestionModel(this, currentQuestion);
 
         //HIDE RESPONSE
 
-        String reponse = currentQuestion.getResponse().toUpperCase();
-        char[] reponseArray= reponse.replaceAll(" ", "").toCharArray();
-        questionPoints = reponseArray.length;
-        Random rnd = new Random();
-        //Complete avec lettre random
-        String randomLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        int j=0;
-        String newReponseString="";
-        for(int i = 0;i<12;i++){
-            if(i>=reponseArray.length){
-                newReponseArray[i]=randomLetters.charAt(rnd.nextInt(randomLetters.length()));
-            }else{
-                newReponseArray[i]=reponseArray[j];
-                j++;
-            }
-            newReponseString+=newReponseArray[i];
-        }
-
-        Logger.error(newReponseString);
-        Arrays.sort(newReponseArray);
-
-        for(j=0;j<12;j++){
+        char[] newReponseArray = questionModel.getButtonLettersList();
+        for(int j=0;j<12;j++){
             buttonList.get(j).setText(String.valueOf(newReponseArray[j]));
             buttonList.get(j).setEnabled(true);
         }
-
-        // Hide response
-        for(int i=0;i<reponse.length();i++){
-            if(reponse.charAt(i)!=' ' && reponse.charAt(i)!='-' ){
-                hideresponse+="_";
-            }else{
-                hideresponse+=reponse.charAt(i);
-            }
-        }
-
-        responseInput.setText(hideresponse);
+        responseInput.setText(questionModel.getResponseText());
 
         if(currentQuestion.getType().equals(QuestionType.SOUND)){
             playerLayout.setVisibility(LinearLayout.VISIBLE);
@@ -287,30 +246,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         }
     }
 
-    public void putLetter(Button button){
-        if(currentResponse.length()>=currentQuestion.getResponse().length()){
-            return;
-        }
-        StringBuilder sb = new StringBuilder(hideresponse);
 
-        char c=button.getText().charAt(0);
-        sb.setCharAt(currentResponse.length(),c);
-        hideresponse = sb.toString().toUpperCase();
-
-        currentResponse=(currentResponse+=c).toUpperCase();
-
-        if(currentResponse.length()<hideresponse.length() && hideresponse.charAt(currentResponse.length())==' '){
-
-            currentResponse+=" ";
-        }
-
-        button.setEnabled(false);
-        responseInput.setText(hideresponse);
-        if(currentResponse.length()>=currentQuestion.getResponse().length()){ // at the end
-            submit();
-        }
-
-    }
 
     public void pausePlayer(){
         if( getmPlayer() != null){
