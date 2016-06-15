@@ -39,9 +39,18 @@ public class ArtistManager {
         if(count<=0){
             return null;
         }
+
         Random randomGenerator = new Random();
         int index = randomGenerator.nextInt(count);
         Artist artist = artists.get(index);
+        int artistLength=artist.getName().replaceAll(" ","").length();
+
+        while( artistLength >12) {
+            index = randomGenerator.nextInt(count);
+            artist = artists.get(index);
+            artistLength=artist.getName().replaceAll(" ","").length();
+
+        }
         return artist;
     }
 
@@ -67,7 +76,6 @@ public class ArtistManager {
             JSONObject jsonObject = new JSONObject(requestResult);
             JSONObject jsonArtists = jsonObject.getJSONObject("artists");
             JSONArray jsonItems = jsonArtists.getJSONArray("items");
-
             for (int i = 0; i < jsonItems.length(); i++) {
                 JSONObject jsonArtist = jsonItems.getJSONObject(i);
                 Artist artist = Artist.createFromJson(jsonArtist);

@@ -14,6 +14,7 @@ import com.example.remy.mmsongquizz.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import interfaces.IQuestion;
 import models.ImageQuestion;
@@ -28,7 +29,8 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     private TextView questionTextView;
     private TextView responseInput;
     private Button submitBtn;
-    private TextView messageText;
+    private ImageButton clearBtn;
+    private Button indiceBtn;
     private TextView compteurQuestion;
     private LinearLayout playerLayout;
     private ImageButton playerStartBtn;
@@ -38,6 +40,13 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     public static final int  nbQuestionParSession =10;
     private WebView myWebView;
     private ArrayList<Button> buttonList;
+    private String hideresponse;
+    private char newReponseArray[] = new char[12];
+    private int questionPoints;
+    private int sessionPoints;
+
+
+    private String currentResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +55,23 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         checkNetwork();
 
-        
+        sessionPoints=0;
  		this.nbQuestion =0;
         isPlaying = true;        questionManager = application.getContainer().get(QuestionManager.class);
 
         questionTextView = (TextView) findViewById(R.id.questionTextView);
         responseInput = (TextView) findViewById(R.id.questionResponseInput);
-        submitBtn = (Button) findViewById(R.id.questionSubmitBtn);
-        messageText = (TextView) findViewById(R.id.questionMessageText);
         this.compteurQuestion = (TextView) findViewById(R.id.compteurQuestion);
+
+        submitBtn = (Button) findViewById(R.id.questionSubmitBtn);
+        clearBtn = (ImageButton) findViewById(R.id.question_clearBtn);
+        indiceBtn = (Button) findViewById(R.id.question_indiceBtn);
+
         playerLayout = (LinearLayout) findViewById(R.id.player_layout);
+
         playerStartBtn = (ImageButton) findViewById(R.id.question_play_button);
         playerRestartBtn = (ImageButton) findViewById(R.id.question_restart_button);
+
         myWebView = (WebView)findViewById(R.id.ImageWebview);
 
         buttonList = new ArrayList<Button>();
@@ -67,25 +81,55 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         buttonList.add((Button)findViewById(R.id.button4));
         buttonList.add((Button)findViewById(R.id.button5));
         buttonList.add((Button)findViewById(R.id.button6));
+        buttonList.add((Button)findViewById(R.id.button7));
+        buttonList.add((Button)findViewById(R.id.button8));
+        buttonList.add((Button)findViewById(R.id.button9));
+        buttonList.add((Button)findViewById(R.id.button10));
+        buttonList.add((Button)findViewById(R.id.button11));
+        buttonList.add((Button) findViewById(R.id.button12));
+
+        for(Button button : buttonList){
+            button.setEnabled(true);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Button button = (Button) v;
+                    putLetter(button);
+                }
+            });
+        }
 
         setCurrentQuestion(questionManager.getRandomQuestion());
 
         initView();
     }
 
+    public void submit(){
+        String response = currentQuestion.getResponse();
+        pausePlayer();
+        if (currentQuestion.checkResponse(currentResponse)) {
+            application.notify("Réponse correcte !");
+            //cumul points
+            sessionPoints+=questionPoints;
+            setCurrentQuestion(questionManager.getRandomQuestion());
+        } else {
+            application.notify("Réponse incorrecte !");
+//            messageText.setText("Réponse incorrecte !");
+        }
+    }
+
     private void initView(){
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String response = responseInput.getText().toString();
-                String response = currentQuestion.getResponse();
-                pausePlayer();
-                if (currentQuestion.checkResponse(response)) {
-                    application.notify("Réponse correcte !");
-                    setCurrentQuestion(questionManager.getRandomQuestion());
-                } else {
-                    messageText.setText("Réponse incorrecte !");
-                }
+                submit();
+            }
+        });
+
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearResponse();
             }
         });
 
@@ -122,7 +166,45 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         }
     }
 
+    private void clearResponse(){
+        int currentPosition = currentResponse.length()-1;
+
+        if(currentPosition<0 ){
+            return;
+        }
+
+        char currentChar = hideresponse.charAt(currentPosition);
+        StringBuilder sb = new StringBuilder(hideresponse);
+
+        if( currentChar == ' '){
+            currentPosition --;
+
+        }
+        for(Button b : buttonList){
+            Logger.error(b.getText()+" "+String.valueOf(currentChar));
+
+            if(b.getText().toString().toUpperCase().equals(String.valueOf(currentChar)) && !b.isEnabled()){
+
+                b.setEnabled(true);
+                break;
+            }
+        }
+
+
+        sb.setCharAt(currentPosition, '_');
+        currentResponse = currentResponse.substring(0,currentPosition);
+        hideresponse = sb.toString();
+        responseInput.setText(hideresponse);
+
+
+    }
+
+
+
     private void setCurrentQuestion(IQuestion question){
+
+        hideresponse="";
+        currentResponse="";
 
         Logger.debug("NBQUESTION :" + nbQuestion);
 
@@ -134,30 +216,45 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         currentQuestion = question;
         questionTextView.setText(currentQuestion.getQuestion());
-        messageText.setText("");
 
         //HIDE RESPONSE
 
         String reponse = currentQuestion.getResponse();
-        char[] reponseArray= reponse.toCharArray();
-        Arrays.sort(reponseArray);
-        String hideReponse="";
+        char[] reponseArray= reponse.replaceAll(" ", "").toCharArray();
+        questionPoints = reponseArray.length;
+        Random rnd = new Random();
+        //Complete avec lettre random
+        String randomLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         int j=0;
+        String newReponseString="";
+        for(int i = 0;i<12;i++){
+            if(i>=reponseArray.length){
+                newReponseArray[i]=randomLetters.charAt(rnd.nextInt(randomLetters.length()));
+            }else{
+                newReponseArray[i]=reponseArray[j];
+                j++;
+            }
+            newReponseString+=newReponseArray[i];
+        }
+
+        Logger.error(newReponseString);
+        Arrays.sort(newReponseArray);
+
+        for(j=0;j<12;j++){
+            buttonList.get(j).setText(String.valueOf(newReponseArray[j]));
+            buttonList.get(j).setEnabled(true);
+        }
+
+        // Hide response
         for(int i=0;i<reponse.length();i++){
             if(reponse.charAt(i)!=' ' && reponse.charAt(i)!='-' ){
-                hideReponse+="X";
-                if(i<buttonList.size()){
-                    buttonList.get(j).setText(String.valueOf(reponseArray[i]));
-                    j++;
-                }
-
+                hideresponse+="_";
             }else{
-                hideReponse+=reponse.charAt(i);
+                hideresponse+=reponse.charAt(i);
             }
         }
 
-        hideReponse+=currentQuestion.getResponse();
-        responseInput.setText(hideReponse);
+        responseInput.setText(hideresponse);
 
         if(currentQuestion.getType().equals(QuestionType.SOUND)){
             playerLayout.setVisibility(LinearLayout.VISIBLE);
@@ -165,8 +262,8 @@ public class QuestionActivity extends AbstractSpotifyActivity {
             this.isPlaying=true;
             this.myWebView.setVisibility(LinearLayout.GONE);
             authenticateSpotify();
-
         }
+
         else if(currentQuestion.getType().equals(QuestionType.IMAGE)){
             myWebView.setVisibility(LinearLayout.VISIBLE);
             ImageQuestion questionImage = (ImageQuestion)currentQuestion;
@@ -198,6 +295,30 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         }
     }
 
+    public void putLetter(Button button){
+        if(currentResponse.length()>=currentQuestion.getResponse().length()){
+            return;
+        }
+        StringBuilder sb = new StringBuilder(hideresponse);
+
+        char c=button.getText().charAt(0);
+        sb.setCharAt(currentResponse.length(),c);
+        hideresponse = sb.toString().toUpperCase();
+
+        currentResponse=(currentResponse+=c).toUpperCase();
+
+        if(currentResponse.length()<hideresponse.length() && hideresponse.charAt(currentResponse.length())==' '){
+
+            currentResponse+=" ";
+        }
+
+        button.setEnabled(false);
+        responseInput.setText(hideresponse);
+        if(currentResponse.length()>=currentQuestion.getResponse().length()){ // at the end
+            submit();
+        }
+
+    }
 
     public void pausePlayer(){
         if( getmPlayer() != null){
