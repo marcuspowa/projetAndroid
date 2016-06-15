@@ -49,8 +49,8 @@ public class CreateUserActivity extends BaseActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toCreateUser = new Intent(CreateUserActivity.this, LoginActivity.class);
-                startActivity(toCreateUser);
+            Intent toLogin = new Intent(CreateUserActivity.this, LoginActivity.class);
+            startActivity(toLogin);
             }
         });
     }

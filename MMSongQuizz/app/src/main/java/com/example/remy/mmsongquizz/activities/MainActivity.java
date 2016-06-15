@@ -25,6 +25,7 @@ import utils.SpotifyUtils;
 public class MainActivity extends BaseActivity {
 
     private Button genrePrefsBtn;
+    private Button logoutBtn;
     private Button startBtn;
     private Button leaderboardBtn;
     private TextView usernameField;
@@ -41,6 +42,7 @@ public class MainActivity extends BaseActivity {
         checkNetwork();
 
         genrePrefsBtn = (Button) findViewById(R.id.main_genre_pref);
+        logoutBtn = (Button) findViewById(R.id.main_logoutBtn);
         startBtn = (Button) findViewById(R.id.startBtn);
         leaderboardBtn = (Button) findViewById(R.id.main_leaderboardsBtn);
         usernameField = (TextView) findViewById(R.id.main_usernameField);
@@ -84,6 +86,15 @@ public class MainActivity extends BaseActivity {
         pointsField.setText(currentUser.getPoints()+" pts");
         levelField.setText("lvl "+currentUser.getCurrentLevel());
 
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userManager.setCurrentUser(null);
+                userManager.setStayConnected(false);
+                Intent toLogin = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(toLogin);
+            }
+        });
         genrePrefsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

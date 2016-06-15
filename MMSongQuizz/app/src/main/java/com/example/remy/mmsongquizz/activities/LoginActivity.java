@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class LoginActivity extends BaseActivity {
     private EditText mPasswordView;
     private Button signInButton;
     private Button createUserBtn;
+    private Button appSettingsBtn;
+    private CheckBox stayloggedinCheckbox;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -52,33 +55,32 @@ public class LoginActivity extends BaseActivity {
         mPasswordView = (EditText) findViewById(R.id.login_password);
         signInButton = (Button) findViewById(R.id.login_sign_in_button);
         createUserBtn = (Button) findViewById(R.id.login_createuserBtn);
+        appSettingsBtn = (Button) findViewById(R.id.login_appSettingsBtn);
+        stayloggedinCheckbox = (CheckBox) findViewById(R.id.login_stayloggedin_checkbox);
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
 
         userManager = application.getContainer().get(UserManager.class);
-
 
 
         initView();
     }
 
     private void initView(){
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
+        boolean hasConnectedUser = userManager.getStayConnected();
+        if(hasConnectedUser){
+            User connectedUser = userManager.getCurrentUser(true);
+            if(null != connectedUser){
+                loginInput.setText(connectedUser.getName());
+                mPasswordView.setText(connectedUser.getPassword());
             }
-        });
-
+        }
+        stayloggedinCheckbox.setChecked(userManager.getStayConnected());
 
         signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                userManager.setStayConnected(stayloggedinCheckbox.isChecked());
             }
         });
 
@@ -87,6 +89,14 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent toCreateUser = new Intent(LoginActivity.this, CreateUserActivity.class);
                 startActivity(toCreateUser);
+            }
+        });
+
+        appSettingsBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toAppSettings = new Intent(LoginActivity.this, ApplicationSettingsActivity.class);
+                startActivity(toAppSettings);
             }
         });
 

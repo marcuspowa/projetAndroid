@@ -128,6 +128,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         if(nbQuestion == nbQuestionParSession){
             Intent toEndSession = new Intent(QuestionActivity.this, EndSessionActivity.class);
+            toEndSession.putExtra(EndSessionActivity.NbPointsEarnedParamName, 0);
             startActivity(toEndSession);
             return;
         }

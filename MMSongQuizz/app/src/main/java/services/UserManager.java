@@ -23,10 +23,12 @@ import utils.SpotifyUtils;
  */
 public class UserManager {
 
-    private static String MMSongQuizzApiHost = "http://192.168.1.19/api/";
+    private static String MMSongQuizzApiBaseUrl = "/api/";
     private static User currentUser;
     public static final String UserCacheKey = "MMSongQuizzCurrentUser";
-    public static boolean standAloneMode = false;
+    public static final String UserStayConnectedCacheKey = "MMSongQuizzStayConnected";
+    public static final String ApiHostAddressKey = "MMSongQuizzApiHostAddress";
+    public static final String StandAloneModeKey = "MMSongQuizzStandAloneModeKey";
 
     private CacheManager cacheManager;
     private HttpUtils httpUtils;
@@ -57,12 +59,63 @@ public class UserManager {
         setCurrentUser(user, true);
     }
 
+    public void setStayConnected(boolean shouldStayConnected){
+        cacheManager.setObject(MMQuizzApplication.getContext(), UserStayConnectedCacheKey, shouldStayConnected);
+    }
+
+    public boolean getStayConnected(){
+        if(!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.UserStayConnectedCacheKey)){
+            return false;
+        }
+        return cacheManager.getObject(MMQuizzApplication.getContext(), UserManager.UserStayConnectedCacheKey);
+    }
+    public void setApiHostAddress(String mmsongquizzApiHostAddress){
+        cacheManager.setObject(MMQuizzApplication.getContext(), ApiHostAddressKey, mmsongquizzApiHostAddress);
+    }
+
+    public String getApiHostAddress(){
+        if(!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.ApiHostAddressKey)){
+            return "http://192.168.1.19";
+        }
+        return cacheManager.getObject(MMQuizzApplication.getContext(), UserManager.ApiHostAddressKey);
+    }
+
+    public String getMMSongQuizzApiUrl(){
+        return getApiHostAddress()+MMSongQuizzApiBaseUrl;
+    }
+
+    public boolean isStandAloneMode(){
+        if(!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.StandAloneModeKey)){
+            return false;
+        }
+        return cacheManager.getObject(MMQuizzApplication.getContext(), UserManager.StandAloneModeKey);
+    }
+
+    public void setStandAloneMode(boolean useStandAloneMode){
+        cacheManager.setObject(MMQuizzApplication.getContext(), StandAloneModeKey, useStandAloneMode);
+    }
+
+
+    public void addPointsToCurrentUser(int nbPoints){
+        User user = getCurrentUser();
+
+        user.setPoints(user.getPoints() + nbPoints);
+
+        user = updateUser(user);
+        if(null!= user){
+            setCurrentUser(user);
+        }
+    }
+
     public User addUser(String username, String password){
         User user = new User();
         user.setName(username);
         user.setPassword(password);
+        if(isStandAloneMode()){
+            return user;
+        }
 
-        String url = MMSongQuizzApiHost+"user/";
+        String url = getMMSongQuizzApiUrl()+"user/";
         HashMap<String, String> headers = new HashMap<>();
         headers.put("content-type", "application/json");
         AsyncHttpPostRequest req = httpUtils.asyncPostRequest(url, user.toJson().toString(), headers);
@@ -87,12 +140,12 @@ public class UserManager {
     }
 
     public User updateUser(User user){
-        if(standAloneMode){
+        if(isStandAloneMode()){
             return user;
         }
         HashMap<String, String> params = new HashMap<>();
 
-        String url = MMSongQuizzApiHost+"user/"+user.getId();
+        String url = getMMSongQuizzApiUrl()+"user/"+user.getId();
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("content-type", "application/json");
@@ -118,7 +171,7 @@ public class UserManager {
     }
 
     public User checkCredentials(String login, String password){
-        if(standAloneMode){
+        if(isStandAloneMode()){
             if("test".equals(login) && "test".equals(password)){
                 Logger.info("STAND ALONE MODE");
                 User userTest = new User();
@@ -136,7 +189,7 @@ public class UserManager {
         params.put("name", login);
         params.put("password", password);
 
-        String url = MMSongQuizzApiHost+"user/CheckCredentials?"+ HttpUtils.concatParams(params);
+        String url = getMMSongQuizzApiUrl()+"user/CheckCredentials?"+ HttpUtils.concatParams(params);
 
         AsyncHttpRequest req = httpUtils.asyncRequest(url);
 
@@ -161,10 +214,13 @@ public class UserManager {
 
 
     public ArrayList<User> getAll(){
+        if(isStandAloneMode()){
+            return new ArrayList<>();
+        }
         ArrayList<User> users = new ArrayList<>();
 
 
-        String url = MMSongQuizzApiHost+"user";
+        String url = getMMSongQuizzApiUrl()+"user";
 
         AsyncHttpRequest req = httpUtils.asyncRequest(url);
 
@@ -193,9 +249,12 @@ public class UserManager {
 
     public ArrayList<User> getleaderBoard(){
         ArrayList<User> users = new ArrayList<>();
+        if(isStandAloneMode()){
+            return users;
+        }
 
 
-        String url = MMSongQuizzApiHost+"user/LeaderBoard";
+        String url = getMMSongQuizzApiUrl()+"user/LeaderBoard";
 
         AsyncHttpRequest req = httpUtils.asyncRequest(url);
 
