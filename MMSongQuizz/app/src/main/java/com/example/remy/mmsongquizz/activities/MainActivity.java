@@ -57,11 +57,10 @@ public class MainActivity extends BaseActivity {
         spotifyUtils.fetchToken();
 
         if(userManager.getCurrentUser() == null) {
-            if (!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.UserCacheKey)) {
-                User userTest = new User();
-                userTest.setId(1);
-                userTest.setName("toto");
-                userManager.setCurrentUser(userTest);
+            if (!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.UserCacheKey)) {// no user: back to login
+                application.notify("veuillez vous connecter");
+                Intent toLogin = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(toLogin);
             } else {
                 userManager.setCurrentUser(userManager.getCurrentUser(true));
             }
