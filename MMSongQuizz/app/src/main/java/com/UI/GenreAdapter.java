@@ -33,7 +33,7 @@ public class GenreAdapter extends ArrayAdapter<Genre> {
         Genre currentGenre = getItem(position);
         View v = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_multiple_choice, null);
         TextView tv = (TextView) v.findViewById(android.R.id.text1);
-        tv.setText(currentGenre.getName());
+        tv.setText(currentGenre.getIntitule());
 
 
         return v;

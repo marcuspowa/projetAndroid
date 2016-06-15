@@ -14,8 +14,19 @@ public class Genre implements Serializable {
     private static final long serialVersionUID = 65613243;
     private String name;
 
-    public Genre(String name) {
+    public String getIntitule() {
+        return intitule;
+    }
+
+    public void setIntitule(String intitule) {
+        this.intitule = intitule;
+    }
+
+    private String intitule;
+
+    public Genre(String name, String intitule) {
         this.name = name;
+        this.intitule = intitule;
     }
 
     public String getName() {
@@ -24,7 +35,7 @@ public class Genre implements Serializable {
 
 
     public static Genre createFromJson(JSONObject jsonObject) throws JSONException {
-        return new Genre(jsonObject.getString("name"));
+        return new Genre(jsonObject.getString("name"),"");
     }
 
     public JSONObject toJson(){
@@ -39,7 +50,7 @@ public class Genre implements Serializable {
 
     public static Genre fromJson(JSONObject json){
         try {
-            return new Genre(json.getString("name"));
+            return new Genre(json.getString("name"),"");
         } catch (JSONException e) {
             Logger.warn("Genre fromoJSON error", e);
         }

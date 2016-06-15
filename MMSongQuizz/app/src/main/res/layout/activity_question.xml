@@ -9,7 +9,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.remy.mmsongquizz.activities.QuestionActivity">
+    tools:context="com.example.remy.mmsongquizz.activities.QuestionActivity"
+
+    android:background="#ffffff">
     <ScrollView
         android:id="@+id/question_scrollS"
         android:layout_width="match_parent"
@@ -37,6 +39,15 @@
                 android:layout_alignEnd="@+id/player_layout"
                 android:layout_gravity="right|center_vertical" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Question :"
+                android:id="@+id/title"
+                android:singleLine="true"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
         </FrameLayout>
 
         <TextView
@@ -48,7 +59,8 @@
             android:layout_below="@+id/compteurQuestionLayout"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:maxLines="5" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -58,7 +70,6 @@
             android:layout_below="@+id/questionTextView">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/questionTextView"
@@ -67,7 +78,7 @@
                 android:layout_marginTop="10dp"
                 android:id="@+id/player_layout"
                 android:weightSum="1"
-                android:background="#00ffffff">
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:layout_width="55dp"
@@ -75,7 +86,8 @@
                     android:id="@+id/question_play_button"
                     android:src="@mipmap/play"
                     android:scaleType="fitXY"
-                    android:background="@null"/>
+                    android:background="@null"
+                    android:layout_gravity="left" />
 
                 <ImageButton
                     android:layout_width="55dp"
@@ -83,7 +95,8 @@
                     android:id="@+id/question_restart_button"
                     android:src="@mipmap/restart"
                     android:scaleType="fitXY"
-                    android:background="@null"/>
+                    android:background="@null" />
+
             </LinearLayout>
 
             <FrameLayout
@@ -141,23 +154,14 @@
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Valider"
-                android:id="@+id/questionSubmitBtn"
-                android:layout_below="@+id/questionResponseInput"
-                android:layout_centerHorizontal="true"
-                android:background="#6cbb5e" />
+            android:layout_gravity="center_horizontal|right">
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Indice"
                 android:id="@+id/question_indiceBtn"
-                android:background="#ddd341" />
+                android:backgroundTint="#e6d028" />
         </LinearLayout>
 
         <LinearLayout
@@ -186,7 +190,8 @@
                         android:layout_height="wrap_content"
                         android:text=" "
                         android:id="@+id/button1"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:backgroundTint="#f4eca3" />
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
@@ -194,7 +199,8 @@
                         android:layout_height="wrap_content"
                         android:text=" "
                         android:id="@+id/button2"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:backgroundTint="#f4eca3" />
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
@@ -202,7 +208,8 @@
                         android:layout_height="wrap_content"
                         android:text=" "
                         android:id="@+id/button3"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:backgroundTint="#f4eca3" />
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
@@ -210,7 +217,8 @@
                         android:layout_height="wrap_content"
                         android:text=" "
                         android:id="@+id/button4"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:backgroundTint="#f4eca3" />
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
@@ -218,7 +226,8 @@
                         android:layout_height="wrap_content"
                         android:text=" "
                         android:id="@+id/button5"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:backgroundTint="#f4eca3" />
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
@@ -226,7 +235,8 @@
                         android:layout_height="wrap_content"
                         android:text=" "
                         android:id="@+id/button6"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:backgroundTint="#f4eca3" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -256,7 +266,8 @@
                             android:layout_height="wrap_content"
                             android:text=" "
                             android:id="@+id/button7"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:backgroundTint="#f4eca3" />
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -264,7 +275,8 @@
                             android:layout_height="wrap_content"
                             android:text=" "
                             android:id="@+id/button8"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:backgroundTint="#f4eca3" />
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -272,7 +284,8 @@
                             android:layout_height="wrap_content"
                             android:text=" "
                             android:id="@+id/button9"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:backgroundTint="#f4eca3" />
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -280,7 +293,8 @@
                             android:layout_height="wrap_content"
                             android:text=" "
                             android:id="@+id/button10"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:backgroundTint="#f4eca3" />
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -288,7 +302,8 @@
                             android:layout_height="wrap_content"
                             android:text=" "
                             android:id="@+id/button11"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:backgroundTint="#f4eca3" />
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -296,7 +311,8 @@
                             android:layout_height="wrap_content"
                             android:text=" "
                             android:id="@+id/button12"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:backgroundTint="#f4eca3" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

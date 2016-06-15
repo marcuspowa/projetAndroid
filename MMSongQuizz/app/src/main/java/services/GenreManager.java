@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -55,10 +57,31 @@ public class GenreManager {
 
     public ArrayList<Genre> getAll(){
         ArrayList<Genre> genres = new ArrayList<>();
-        genres.add(new Genre("rock"));
-        genres.add(new Genre("jazz"));
-        genres.add(new Genre("blues"));
+        genres.add(new Genre("rock","Rock"));
+        genres.add(new Genre("jazz","Jazz"));
+        genres.add(new Genre("blues","Blues"));
+        genres.add(new Genre("pop","Pop"));
+        genres.add(new Genre("classical","Classique"));
+        genres.add(new Genre("r&b","RnB"));
+        genres.add(new Genre("metal","Métal"));
+        genres.add(new Genre("rap","Rap"));
+        genres.add(new Genre("hip-hop","Hip Hop"));
+        genres.add(new Genre("hard-rock","Hard Rock"));
+        genres.add(new Genre("electro","Electro"));
+        genres.add(new Genre("folk","Folk"));
+        genres.add(new Genre("country","Country"));
+        genres.add(new Genre("reggae","Reggae"));
+        genres.add(new Genre("soul","Soul"));
+        genres.add(new Genre("french-rock","Rock français"));
+        genres.add(new Genre("french-pop","Variété française"));
+        genres.add(new Genre("pop-rock","Pop Rock"));
 
+        Collections.sort(genres, new Comparator<Genre>() {
+            @Override
+            public int compare(Genre genre1, Genre genre2) {
+                return genre1.getName().compareTo(genre2.getName());
+            }
+        });
 
         return genres;
     }

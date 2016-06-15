@@ -55,7 +55,7 @@ public class Track implements Serializable {
         String newTitle="";
         int i =0;
         while(i!=title.length()){
-            if(title.charAt(i)=='('){
+            if(title.charAt(i)=='(' || ((i+2 < title.length()) && (title.charAt(i)==' ' && title.charAt(i+1)=='-' && title.charAt(i+2)==' '))){
                 break;
             }
             newTitle+=title.charAt(i);

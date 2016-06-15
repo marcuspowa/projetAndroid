@@ -30,7 +30,7 @@ public class BasicQuestion implements IQuestion{
         for(Track track : tracks){
             titles.add(track.getTitle());
         }
-        return "Qui interprète les titres : " + TextUtils.join(" , ", titles);
+        return "Qui interprète les titres :\n - " + TextUtils.join("\n - ", titles);
     }
 
     @Override

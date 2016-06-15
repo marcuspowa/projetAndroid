@@ -116,7 +116,7 @@ public class User implements Serializable {
             user.currentQuestion = jsonUser.getInt("currentQuestionNumber");
             String genres = jsonUser.getString("preferedGenres");
             for(String genre : genres.split(",")) {
-                user.getPreferedGenres().add(new Genre(genre));
+                user.getPreferedGenres().add(new Genre(genre,""));
             }
         } catch (JSONException e) {
             Logger.warn("User From Json error",e);

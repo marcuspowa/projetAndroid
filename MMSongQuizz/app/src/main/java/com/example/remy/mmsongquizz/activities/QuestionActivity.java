@@ -28,7 +28,6 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     private IQuestion currentQuestion;
     private TextView questionTextView;
     private TextView responseInput;
-    private Button submitBtn;
     private ImageButton clearBtn;
     private Button indiceBtn;
     private TextView compteurQuestion;
@@ -63,7 +62,6 @@ public class QuestionActivity extends AbstractSpotifyActivity {
         responseInput = (TextView) findViewById(R.id.questionResponseInput);
         this.compteurQuestion = (TextView) findViewById(R.id.compteurQuestion);
 
-        submitBtn = (Button) findViewById(R.id.questionSubmitBtn);
         clearBtn = (ImageButton) findViewById(R.id.question_clearBtn);
         indiceBtn = (Button) findViewById(R.id.question_indiceBtn);
 
@@ -119,12 +117,6 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     }
 
     private void initView(){
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submit();
-            }
-        });
 
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,7 +264,6 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
             String html = "<html><body><img src=\"" + questionImage.getUrlImage() + "\" width=\"100%\" height=\"100%\"\"/></body></html>";
             myWebView.loadData(html, "text/html", null);
-            //myWebView.loadUrl(questionImage.getUrlImage());
 
         }else{
             playerLayout.setVisibility(LinearLayout.GONE);
