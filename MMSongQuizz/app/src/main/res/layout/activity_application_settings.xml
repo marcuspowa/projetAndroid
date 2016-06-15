@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.remy.mmsongquizz.activities.CreateUserActivity">
+    tools:context="com.example.remy.mmsongquizz.activities.ApplicationSettingsActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -21,52 +21,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Créer un compte"
-            android:id="@+id/createuser_title"
-            android:textStyle="bold" />
-
+            android:text="Paramètres d&apos;application"
+            android:id="@+id/textView7" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorPrimary"
             android:layout_marginBottom="10dp" />
 
-        <EditText
-            android:id="@+id/createuser_login"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_login"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/action_sign_in_short"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:paddingTop="10dp"
-            android:inputType="text" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/createuser_password"
-            android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/appsettings_apiHost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Hôte de l'API MMSongQuizz"
+                android:imeActionId="@+id/login"
+                android:imeOptions="actionUnspecified"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <CheckBox
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_password"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/action_sign_in_short"
-            android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:layout_gravity="center_horizontal" />
+            android:text="Mode standalone"
+            android:id="@+id/appsettings_standalone_checkbox"
+            android:checked="false" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Créer"
-            android:id="@+id/createuser_submit" />
+            android:text="Enregistrer"
+            android:id="@+id/appsettings_submit"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Retour"
-            android:id="@+id/createuser_backBtn"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/appsettings_backBtn"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp" />
+
     </LinearLayout>
 </RelativeLayout>

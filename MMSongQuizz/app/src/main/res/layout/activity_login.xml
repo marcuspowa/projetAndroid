@@ -11,13 +11,6 @@
     tools:context="com.example.remy.mmsongquizz.activities.LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
 
     <ScrollView
         android:id="@+id/login_form"
@@ -70,6 +63,20 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/login_stayloggedin_layout">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="rester connecté"
+                    android:id="@+id/login_stayloggedin_checkbox"
+                    android:checked="true" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/login_sign_in_button"
                 style="?android:textAppearanceSmall"
@@ -84,6 +91,13 @@
                 android:layout_height="wrap_content"
                 android:text="Créer compte"
                 android:id="@+id/login_createuserBtn"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Paramètres applicatifs"
+                android:id="@+id/login_appSettingsBtn"
                 android:layout_gravity="center_horizontal" />
 
         </LinearLayout>

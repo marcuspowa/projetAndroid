@@ -32,7 +32,7 @@ public class ImageQuestion implements IQuestion {
     @Override
     public boolean checkResponse(String response) {
 
-        return response.equals(getResponse());
+        return this.getResponse().toLowerCase().equals(response.toLowerCase());
     }
 
 

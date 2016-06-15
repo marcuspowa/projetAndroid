@@ -5,10 +5,53 @@
     android:weightSum="1">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Fin de session"
+        android:id="@+id/endsession_title"
+        android:layout_weight="0.03" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="10dp" />
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Fins de Session, vous avez répondu a 10 questions"
         android:id="@+id/textView6"
-        android:layout_weight="0.18"
+        android:layout_weight="0.11"
         android:textSize="20dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.03">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Vous avez gagné "
+            android:id="@+id/textView8" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0 points"
+            android:id="@+id/endsession_nbpointsearnedLabel"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Accueil"
+        android:id="@+id/endsession_home_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.03"
+        android:textStyle="bold" />
 </LinearLayout>

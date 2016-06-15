@@ -71,7 +71,7 @@ public class MMQuizzApplication extends Application {
                 }
             }
         }
-        this.notify(sType);
+        Logger.debug(sType);
         return networkAvailable;
     }
 

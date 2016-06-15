@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.remy.mmsongquizz.R;
 
 
+import models.Genre;
 import models.User;
 import services.ArtistManager;
 import services.CacheManager;
@@ -24,7 +25,9 @@ import utils.SpotifyUtils;
 public class MainActivity extends BaseActivity {
 
     private Button genrePrefsBtn;
+    private Button logoutBtn;
     private Button startBtn;
+    private Button leaderboardBtn;
     private TextView usernameField;
     private TextView pointsField;
     private TextView levelField;
@@ -39,7 +42,9 @@ public class MainActivity extends BaseActivity {
         checkNetwork();
 
         genrePrefsBtn = (Button) findViewById(R.id.main_genre_pref);
+        logoutBtn = (Button) findViewById(R.id.main_logoutBtn);
         startBtn = (Button) findViewById(R.id.startBtn);
+        leaderboardBtn = (Button) findViewById(R.id.main_leaderboardsBtn);
         usernameField = (TextView) findViewById(R.id.main_usernameField);
         pointsField = (TextView) findViewById(R.id.main_pointsField);
         levelField = (TextView) findViewById(R.id.main_levelField);
@@ -52,20 +57,22 @@ public class MainActivity extends BaseActivity {
         spotifyUtils.fetchToken();
 
         if(userManager.getCurrentUser() == null) {
-            if (!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.UserCacheKey)) {
-                User userTest = new User();
-                userTest.setId(1);
-                userTest.setName("toto");
-                userManager.setCurrentUser(userTest);
+            if (!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.UserCacheKey)) {// no user: back to login
+                application.notify("veuillez vous connecter");
+                Intent toLogin = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(toLogin);
             } else {
                 userManager.setCurrentUser(userManager.getCurrentUser(true));
             }
         }
         Logger.debug("Current User initialisé");
 
-//        userManager.updateUser(userManager.getCurrentUser());
-
-//        userManager.getAll();
+        //if no prefered genres : redirect to genre selection
+        if(userManager.getCurrentUser().getPreferedGenres().size() == 0){
+            application.notify("Veuillez sélectionner vos genres préférés");
+            Intent toGenrePrefs = new Intent(MainActivity.this, GenreActivity.class);
+            startActivity(toGenrePrefs);
+        }
 
         initView();
     }
@@ -78,6 +85,15 @@ public class MainActivity extends BaseActivity {
         pointsField.setText(currentUser.getPoints()+" pts");
         levelField.setText("lvl "+currentUser.getCurrentLevel());
 
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userManager.setCurrentUser(null);
+                userManager.setStayConnected(false);
+                Intent toLogin = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(toLogin);
+            }
+        });
         genrePrefsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +106,13 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent toQuestion = new Intent(MainActivity.this, QuestionActivity.class);
                 startActivity(toQuestion);
+            }
+        });
+        leaderboardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toLeaderboard = new Intent(MainActivity.this, LeaderboardActivity.class);
+                startActivity(toLeaderboard);
             }
         });
     }

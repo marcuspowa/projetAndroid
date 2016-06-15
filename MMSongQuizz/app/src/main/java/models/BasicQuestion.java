@@ -40,7 +40,7 @@ public class BasicQuestion implements IQuestion{
 
     @Override
     public boolean checkResponse(String response) {
-        return this.getResponse().equals(response);
+        return this.getResponse().toLowerCase().equals(response.toLowerCase());
     }
 
 }

@@ -107,7 +107,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
     public void submit(){
         String response = currentQuestion.getResponse();
         pausePlayer();
-        if (currentQuestion.checkResponse(currentResponse)) {
+        if (currentQuestion.checkResponse(hideresponse)) {
             application.notify("Réponse correcte !");
             //cumul points
             sessionPoints+=questionPoints;
@@ -210,6 +210,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         if(nbQuestion == nbQuestionParSession){
             Intent toEndSession = new Intent(QuestionActivity.this, EndSessionActivity.class);
+            toEndSession.putExtra(EndSessionActivity.NbPointsEarnedParamName, sessionPoints);
             startActivity(toEndSession);
             return;
         }
@@ -219,7 +220,7 @@ public class QuestionActivity extends AbstractSpotifyActivity {
 
         //HIDE RESPONSE
 
-        String reponse = currentQuestion.getResponse();
+        String reponse = currentQuestion.getResponse().toUpperCase();
         char[] reponseArray= reponse.replaceAll(" ", "").toCharArray();
         questionPoints = reponseArray.length;
         Random rnd = new Random();
