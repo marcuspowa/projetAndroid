@@ -15,7 +15,6 @@ import services.*;
             ArtistManager.class,
             UserManager.class,
             CacheManager.class,
-            AsyncDataFetcher.class,
             SpotifyUtils.class
     }
 )
