@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity {
     private TextView pointsField;
     private TextView levelField;
     private UserManager userManager;
+    private CacheManager cacheManager;
 
 
     @Override
@@ -51,33 +52,38 @@ public class MainActivity extends BaseActivity {
 
 
         userManager = application.getContainer().get(UserManager.class);
-        CacheManager cacheManager = application.getContainer().get(CacheManager.class);
+        cacheManager = application.getContainer().get(CacheManager.class);
         SpotifyUtils spotifyUtils = application.getContainer().get(SpotifyUtils.class);
 
         spotifyUtils.fetchToken();
 
         if(userManager.getCurrentUser() == null) {
-            if (!cacheManager.exists(MMQuizzApplication.getContext(), UserManager.UserCacheKey)) {// no user: back to login
-                application.notify("veuillez vous connecter");
-                Intent toLogin = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(toLogin);
-            } else {
+            if (cacheManager.exists(MMQuizzApplication.getContext(), UserManager.UserCacheKey)) {// get cached user
                 userManager.setCurrentUser(userManager.getCurrentUser(true));
             }
         }
-        Logger.debug("Current User initialisé");
-
-        //if no prefered genres : redirect to genre selection
-        if(userManager.getCurrentUser().getPreferedGenres().size() == 0){
-            application.notify("Veuillez sélectionner vos genres préférés");
-            Intent toGenrePrefs = new Intent(MainActivity.this, GenreActivity.class);
-            startActivity(toGenrePrefs);
+        if(userManager.getCurrentUser() == null) { // no user : go to login
+            application.notify("veuillez vous connecter");
+            Intent toLogin = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(toLogin);
+            return;
         }
+        Logger.debug("Current User initialisé");
 
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        //if no prefered genres : redirect to genre selection
+        if(null != userManager.getCurrentUser() && userManager.getCurrentUser().getPreferedGenres().size() == 0){
+            application.notify("Veuillez sélectionner vos genres préférés");
+            Intent toGenrePrefs = new Intent(MainActivity.this, GenreActivity.class);
+            startActivity(toGenrePrefs);
+        }
+    }
 
     private void initView(){
         User currentUser = userManager.getCurrentUser();
